@@ -1,0 +1,265 @@
+SQL*Plus: Release 11.2.0.2.0 Production on Thu Jun 4 10:27:34 2026
+
+Copyright (c) 1982, 2014, Oracle.  All rights reserved.
+
+SQL> desc emp;
+SP2-0640: Not connected
+SP2-0641: "DESCRIBE" requires connection to server
+SQL> connect
+Enter user-name: system
+Enter password:
+Connected.
+SQL> desc emp;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ EMPID                                              NUMBER(38)
+ ENAME                                              CHAR(10)
+ ECITY                                              CHAR(10)
+ ESAL                                               NUMBER(38)
+
+SQL> insert into emp values (101,'p','ngp',10000);
+
+1 row created.
+
+SQL> insert into emp (EMPID,ENAME,ESAL) values (102,'r',100000);
+
+1 row created.
+
+SQL> insert into emp values (101,'p',10000);
+insert into emp values (101,'p',10000)
+            *
+ERROR at line 1:
+ORA-00947: not enough values
+
+
+SQL> desc emp3;
+ERROR:
+ORA-04043: object emp3 does not exist
+
+
+SQL> create table emp1 as select * from emp;
+
+Table created.
+
+SQL> insert into emp1 select * from emp;
+
+4 rows created.
+
+SQL> select * from emp1;
+
+     EMPID ENAME      ECITY            ESAL
+---------- ---------- ---------- ----------
+       100 n          ngp             10000
+       101 m          mumbai          12000
+       101 p          ngp             10000
+       102 r                         100000
+       100 n          ngp             10000
+       101 m          mumbai          12000
+       101 p          ngp             10000
+       102 r                         100000
+
+8 rows selected.
+
+SQL> desc emp;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ EMPID                                              NUMBER(38)
+ ENAME                                              CHAR(10)
+ ECITY                                              CHAR(10)
+ ESAL                                               NUMBER(38)
+
+SQL> insert into emp values (&empid,'&ename','&ecity',&esal);
+Enter value for empid: 105
+Enter value for ename: payal
+Enter value for ecity: nagpur
+Enter value for esal: 10300
+old   1: insert into emp values (&empid,'&ename','&ecity',&esal)
+new   1: insert into emp values (105,'payal','nagpur',10300)
+
+1 row created.
+
+SQL> /
+Enter value for empid: 106
+Enter value for ename: raju
+Enter value for ecity: nagpur
+Enter value for esal: 100000
+old   1: insert into emp values (&empid,'&ename','&ecity',&esal)
+new   1: insert into emp values (106,'raju','nagpur',100000)
+
+1 row created.
+
+SQL> show database;
+SP2-0158: unknown SHOW option "database"
+SQL> show databases;
+SP2-0158: unknown SHOW option "databases"
+SQL> use db
+SP2-0042: unknown command "use db" - rest of line ignored.
+SQL> show user;
+USER is "SYSTEM"
+SQL> select emp from system;
+select emp from system
+                *
+ERROR at line 1:
+ORA-00942: table or view does not exist
+
+
+SQL> select * from emp;
+
+     EMPID ENAME      ECITY            ESAL
+---------- ---------- ---------- ----------
+       100 n          ngp             10000
+       101 m          mumbai          12000
+       101 p          ngp             10000
+       102 r                         100000
+       105 payal      nagpur          10300
+       106 raju       nagpur         100000
+
+6 rows selected.
+
+SQL> update emp set ecity='mumbai' where empid=102;
+
+1 row updated.
+
+SQL> select * from emp;
+
+     EMPID ENAME      ECITY            ESAL
+---------- ---------- ---------- ----------
+       100 n          ngp             10000
+       101 m          mumbai          12000
+       101 p          ngp             10000
+       102 r          mumbai         100000
+       105 payal      nagpur          10300
+       106 raju       nagpur         100000
+
+6 rows selected.
+
+SQL> update emp set ecity='pune',ename='ram' where empid=102;
+
+1 row updated.
+
+SQL> select * from emp;
+
+     EMPID ENAME      ECITY            ESAL
+---------- ---------- ---------- ----------
+       100 n          ngp             10000
+       101 m          mumbai          12000
+       101 p          ngp             10000
+       102 ram        pune           100000
+       105 payal      nagpur          10300
+       106 raju       nagpur         100000
+
+6 rows selected.
+
+SQL> commit;
+
+Commit complete.
+
+SQL> alter  table emp add (country varchar(10));
+
+Table altered.
+
+SQL> update emp set country='India';
+
+6 rows updated.
+
+SQL> select * from emp;
+
+     EMPID ENAME      ECITY            ESAL COUNTRY
+---------- ---------- ---------- ---------- ----------
+       100 n          ngp             10000 India
+       101 m          mumbai          12000 India
+       101 p          ngp             10000 India
+       102 ram        pune           100000 India
+       105 payal      nagpur          10300 India
+       106 raju       nagpur         100000 India
+
+6 rows selected.
+
+SQL> rollback;
+
+Rollback complete.
+
+SQL> delete from emp where empid='101';
+
+2 rows deleted.
+
+SQL> delete from emp;
+
+4 rows deleted.
+
+SQL> select * from emp;
+
+no rows selected
+
+SQL> rollback;
+
+Rollback complete.
+
+SQL> select * from emp;
+
+     EMPID ENAME      ECITY            ESAL COUNTRY
+---------- ---------- ---------- ---------- ----------
+       100 n          ngp             10000
+       101 m          mumbai          12000
+       101 p          ngp             10000
+       102 ram        pune           100000
+       105 payal      nagpur          10300
+       106 raju       nagpur         100000
+
+6 rows selected.
+
+SQL> create user sqladmin indentified by system;
+create user sqladmin indentified by system
+                     *
+ERROR at line 1:
+ORA-00922: missing or invalid option
+
+
+SQL> create user sqladmin identified by system;
+
+User created.
+
+SQL> grant connect to sqladmin;
+
+Grant succeeded.
+
+SQL> grant connect,resource,dba to sqladmin;
+
+Grant succeeded.
+
+SQL> grant unlimited tablespace to sqladmin;
+
+Grant succeeded.
+
+SQL> grant select,insert,update,delete on emp to sqladmin;
+
+Grant succeeded.
+
+SQL> drop user sqladmiin;
+drop user sqladmiin
+          *
+ERROR at line 1:
+ORA-01918: user 'SQLADMIIN' does not exist
+
+
+SQL> drop user sqladmin;
+
+User dropped.
+
+SQL> create user sqladmin identified by system;
+
+User created.
+
+SQL> grant connect to sqladmin;
+
+Grant succeeded.
+
+SQL> grant create table to sqladmin;
+
+Grant succeeded.
+
+SQL> revoke create table from sqladmin;
+
+Revoke succeeded.
+
+SQL>
