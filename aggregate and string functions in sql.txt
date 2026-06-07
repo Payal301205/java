@@ -1,0 +1,585 @@
+
+SQL*Plus: Release 11.2.0.2.0 Production on Sun Jun 7 09:30:11 2026
+
+Copyright (c) 1982, 2014, Oracle.  All rights reserved.
+
+SQL> connect
+Enter user-name: system
+Enter password:
+Connected.
+
+SQL> select 10+20 from dual;
+
+     10+20
+----------
+        30
+
+SQL> select sysdate from dual;
+
+SYSDATE
+---------
+06-JUN-26
+
+SQL> insert into emp2 values (102, "raju","bhndara",40000,10);
+insert into emp2 values (102, "raju","bhndara",40000,10)
+                                     *
+ERROR at line 1:
+ORA-00984: column not allowed here
+
+
+SQL> insert into emp2 values (102, 'raju','bhndara',40000,10);
+
+1 row created.
+
+SQL> insert into emp2 values (103, 'suni','bhndara',60000,19);
+
+1 row created.
+
+SQL> insert into emp2 values (103, 'rani','bhndara',30000,15);
+
+1 row created.
+
+SQL> select from emp2 where ecity='ngp';
+select from emp2 where ecity='ngp'
+       *
+ERROR at line 1:
+ORA-00936: missing expression
+
+
+SQL> select * from emp2 where ecity='ngp';
+
+     EMPID ENAME      ECITY            ESAL         ID
+---------- ---------- ---------- ---------- ----------
+       101 payal      ngp             10000         12
+
+SQL> select * from emp2 where esal>30000;
+
+     EMPID ENAME      ECITY            ESAL         ID
+---------- ---------- ---------- ---------- ----------
+       102 raju       bhndara         40000         10
+       103 suni       bhndara         60000         19
+
+SQL> select * from emp2 where esal<30000;
+
+     EMPID ENAME      ECITY            ESAL         ID
+---------- ---------- ---------- ---------- ----------
+       101 payal      ngp             10000         12
+
+SQL> select * from emp2 where esal<=30000;
+
+     EMPID ENAME      ECITY            ESAL         ID
+---------- ---------- ---------- ---------- ----------
+       101 payal      ngp             10000         12
+       103 rani       bhndara         30000         15
+
+SQL> select * from emp2 where esal>=30000;
+
+     EMPID ENAME      ECITY            ESAL         ID
+---------- ---------- ---------- ---------- ----------
+       102 raju       bhndara         40000         10
+       103 suni       bhndara         60000         19
+       103 rani       bhndara         30000         15
+
+SQL> select * from emp2 where esal<>50000;
+
+     EMPID ENAME      ECITY            ESAL         ID
+---------- ---------- ---------- ---------- ----------
+       101 payal      ngp             10000         12
+       102 raju       bhndara         40000         10
+       103 suni       bhndara         60000         19
+       103 rani       bhndara         30000         15
+
+SQL> select * from emp2 where esal>all(select esal from emp2 where esal>50000);
+
+no rows selected
+
+SQL> select * from emp2 where ecity='ngp' and esal>30000;
+
+no rows selected
+
+SQL> select * from emp2 where esal>any(select esal from emp2 where esal>50000);
+
+no rows selected
+
+SQL> select * from emp2 where esal between 30000 and 50000;
+
+     EMPID ENAME      ECITY            ESAL         ID
+---------- ---------- ---------- ---------- ----------
+       102 raju       bhndara         40000         10
+       103 rani       bhndara         30000         15
+
+SQL> select * from emp2 where ecity in ('ngp','Pune');
+
+     EMPID ENAME      ECITY            ESAL         ID
+---------- ---------- ---------- ---------- ----------
+       101 payal      ngp             10000         12
+
+SQL> select * from emp2 where ecity like 'r%';
+
+no rows selected
+
+SQL> select * from emp2 where ename like 'r%';
+
+     EMPID ENAME      ECITY            ESAL         ID
+---------- ---------- ---------- ---------- ----------
+       102 raju       bhndara         40000         10
+       103 rani       bhndara         30000         15
+
+SQL> select * from emp2 where ename not like 'r%';
+
+     EMPID ENAME      ECITY            ESAL         ID
+---------- ---------- ---------- ---------- ----------
+       101 payal      ngp             10000         12
+       103 suni       bhndara         60000         19
+
+SQL> select * from emp2 where ecity='ngp' or ecity='pune';
+
+     EMPID ENAME      ECITY            ESAL         ID
+---------- ---------- ---------- ---------- ----------
+       101 payal      ngp             10000         12
+
+SQL> select * from emp2;
+
+     EMPID ENAME      ECITY            ESAL         ID
+---------- ---------- ---------- ---------- ----------
+       101 payal      ngp             10000         12
+       102 raju       bhndara         40000         10
+       103 suni       bhndara         60000         19
+       103 rani       bhndara         30000         15
+
+SQL> insert into emp2 values (100, 'raj','pune',3000,16);
+
+1 row created.
+
+SQL> select * from emp2;
+
+     EMPID ENAME      ECITY            ESAL         ID
+---------- ---------- ---------- ---------- ----------
+       101 payal      ngp             10000         12
+       102 raju       bhndara         40000         10
+       103 suni       bhndara         60000         19
+       103 rani       bhndara         30000         15
+       100 raj        pune             3000         16
+
+SQL> selct count(*) from emp2;
+SP2-0734: unknown command beginning "selct coun..." - rest of line ignored.
+SQL> select count(*) from emp2;
+
+  COUNT(*)
+----------
+         5
+
+SQL> select count(ename) from emp2;
+
+COUNT(ENAME)
+------------
+           5
+
+SQL> insert into emp2 values (102, 'raj','pune',3000,16);
+
+1 row created.
+
+SQL> select count(distinct ename) from emp2;
+
+COUNT(DISTINCTENAME)
+--------------------
+                   5
+
+SQL> select count(ename) from emp2 where ecity='bhndara';
+
+COUNT(ENAME)
+------------
+           3
+
+SQL> selct sum(esal) from emp2;
+SP2-0734: unknown command beginning "selct sum(..." - rest of line ignored.
+SQL> select sum(esal) from emp2;
+
+ SUM(ESAL)
+----------
+    146000
+
+SQL> select sum(esal) as 'Total salary' from emp2 where esal>20000;
+select sum(esal) as 'Total salary' from emp2 where esal>20000
+                    *
+ERROR at line 1:
+ORA-00923: FROM keyword not found where expected
+
+
+SQL> select sum(esal) from emp2 as 'Total Salary' where esal>20000;
+select sum(esal) from emp2 as 'Total Salary' where esal>20000
+                           *
+ERROR at line 1:
+ORA-00933: SQL command not properly ended
+
+
+SQL> select sum(esal) as "Total salary" from emp2 where esal>20000;
+
+Total salary
+------------
+      130000
+
+SQL> select sum(distinct esal) as "Total salary" from emp2 where esal>20000;
+
+Total salary
+------------
+      130000
+
+SQL> select ecity,sum(esal) as "Total" from emp2 grp by ecity='bhndara';
+select ecity,sum(esal) as "Total" from emp2 grp by ecity='bhndara'
+                                                *
+ERROR at line 1:
+ORA-00933: SQL command not properly ended
+
+
+SQL> select ecity,sum(esal) as "Total" from emp2 group by ecity='bhndara';
+select ecity,sum(esal) as "Total" from emp2 group by ecity='bhndara'
+                                                          *
+ERROR at line 1:
+ORA-00933: SQL command not properly ended
+
+
+SQL> select ecity,sum(esal) as "Total" from emp2 group by ecity;
+
+ECITY           Total
+---------- ----------
+ngp             10000
+bhndara        130000
+pune             6000
+
+SQL> select avg(esal) from emp2;
+
+ AVG(ESAL)
+----------
+24333.3333
+
+SQL> select avg(esal) as "Average Salary" from emp2;
+
+Average Salary
+--------------
+    24333.3333
+
+SQL> select avg(esal) as "Average Salary" from emp2 group by ecity;
+
+Average Salary
+--------------
+         10000
+    43333.3333
+          3000
+
+SQL> select ecity, avg(esal) as "Average Salary" from emp2 group by ecity;
+
+ECITY      Average Salary
+---------- --------------
+ngp                 10000
+bhndara        43333.3333
+pune                 3000
+
+SQL> select min(esal) from emp2;
+
+ MIN(ESAL)
+----------
+      3000
+
+SQL> select min(esal) as "Minimum Salary" from emp2;
+
+Minimum Salary
+--------------
+          3000
+
+SQL> select ecity, min(esal) as "Minimum Salary" from emp2 group by ecity;
+
+ECITY      Minimum Salary
+---------- --------------
+ngp                 10000
+bhndara             30000
+pune                 3000
+
+SQL> select max(esal) from emp2;
+
+ MAX(ESAL)
+----------
+     60000
+
+SQL> select max(esal) as "Maximum Salary" from emp2;
+
+Maximum Salary
+--------------
+         60000
+
+SQL> select ecity, max(esal) as "Maximum Salary" from emp2 group by ecity;
+
+ECITY      Maximum Salary
+---------- --------------
+ngp                 10000
+bhndara             60000
+pune                 3000
+
+SQL>SQL> select avg(esal) from emp2;
+
+ AVG(ESAL)
+----------
+24333.3333
+
+SQL> select avg(esal) as "Average Salary" from emp2;
+
+Average Salary
+--------------
+    24333.3333
+
+SQL> select avg(esal) as "Average Salary" from emp2 group by ecity;
+
+Average Salary
+--------------
+         10000
+    43333.3333
+          3000
+
+SQL> select ecity, avg(esal) as "Average Salary" from emp2 group by ecity;
+
+ECITY      Average Salary
+---------- --------------
+ngp                 10000
+bhndara        43333.3333
+pune                 3000
+
+SQL> select min(esal) from emp2;
+
+ MIN(ESAL)
+----------
+      3000
+
+SQL> select min(esal) as "Minimum Salary" from emp2;
+
+Minimum Salary
+--------------
+          3000
+
+SQL> select ecity, min(esal) as "Minimum Salary" from emp2 group by ecity;
+
+ECITY      Minimum Salary
+---------- --------------
+ngp                 10000
+bhndara             30000
+pune                 3000
+
+SQL> select max(esal) from emp2;
+
+ MAX(ESAL)
+----------
+     60000
+
+SQL> select max(esal) as "Maximum Salary" from emp2;
+
+Maximum Salary
+--------------
+         60000
+
+SQL> select ecity, max(esal) as "Maximum Salary" from emp2 group by ecity;
+
+ECITY      Maximum Salary
+---------- --------------
+ngp                 10000
+bhndara             60000
+pune                 3000
+
+SQL> select abs(-44) from dual;
+
+  ABS(-44)
+----------
+        44
+
+SQL> select power(2,4) from dual;
+
+POWER(2,4)
+----------
+        16
+
+SQL> select exp(4) from dual;
+
+    EXP(4)
+----------
+  54.59815
+
+SQL> select greatest(10,20,30) from dual;
+
+GREATEST(10,20,30)
+------------------
+                30
+
+SQL> select least(10,20,30) from dual;
+
+LEAST(10,20,30)
+---------------
+             10
+
+SQL> select round(4.2) from dual;
+
+ROUND(4.2)
+----------
+         4
+
+SQL> select round(4.2,5) from dual;
+
+ROUND(4.2,5)
+------------
+         4.2
+
+SQL> select round(4.2,2) from dual;
+
+ROUND(4.2,2)
+------------
+         4.2
+
+SQL> select floor(4.2) from dual;
+
+FLOOR(4.2)
+----------
+         4
+
+SQL> select trunc(4.2,2) from dual;
+
+TRUNC(4.2,2)
+------------
+         4.2
+
+SQL> select mod(4.2,2) from dual;
+
+MOD(4.2,2)
+----------
+        .2
+
+SQL>
+
+SQL> select trunc(153.275765,4) from dual;
+
+TRUNC(153.275765,4)
+-------------------
+           153.2757
+
+SQL> select trunc(153.275765,0) from dual;
+
+TRUNC(153.275765,0)
+-------------------
+                153
+
+SQL> selct mod(8,3) as "Fing MOD" from dual;
+SP2-0734: unknown command beginning "selct mod(..." - rest of line ignored.
+SQL> select mod(8,3) as "Fing MOD" from dual;
+
+  Fing MOD
+----------
+         2
+
+SQL> select lower('hello') from dual;
+
+LOWER
+-----
+hello
+
+SQL> select upper('hello') from dual;
+
+UPPER
+-----
+HELLO
+
+SQL> select initcap('payal raju taitkar') "full name" from dual;
+
+full name
+------------------
+Payal Raju Taitkar
+
+SQL> select substr('code with help4code',1,7) from dual;
+
+SUBSTR(
+-------
+code wi
+
+SQL> select trim('   code with help4code   ') from dual;
+
+TRIM('CODEWITHHELP4
+-------------------
+code with help4code
+
+SQL> select ltrim('hello payal taitkar','taitkar') from dual;
+
+LTRIM('HELLOPAYALTA
+-------------------
+hello payal taitkar
+
+SQL> select rtrim('hello payal taitkar','taitkar') from dual;
+
+RTRIM('HELLO
+------------
+hello payal
+
+SQL> select ltrim('hello payal taitkar','hello') from dual;
+
+LTRIM('HELLOPA
+--------------
+ payal taitkar
+
+
+SQL> selct rpad('payalishere','15','#') from dual;
+SP2-0734: unknown command beginning "selct rpad..." - rest of line ignored.
+SQL> select rpad('payalishere','15','#') from dual;
+
+RPAD('PAYALISHE
+---------------
+payalishere####
+
+SQL> select lpad('payalishere','15','_') from dual;
+
+LPAD('PAYALISHE
+---------------
+____payalishere
+
+SQL> select lpad('payalishere','15','hello') from dual;
+
+LPAD('PAYALISHE
+---------------
+hellpayalishere
+
+SQL> select length('payal raju taitkar') as"length" from dual;
+
+    length
+----------
+        18
+
+SQL> select concat ('payal','taitkar') as "full name" from dual;
+
+full name
+------------
+payaltaitkar
+
+SQL> select replace('111payal111','111') from dual;
+
+REPLA
+-----
+payal
+
+SQL> select reverse('payal taitkar') from dual;
+
+REVERSE('PAYA
+-------------
+raktiat layap
+
+SQL> select ascii('A') from dual;
+
+ASCII('A')
+----------
+        65
+
+SQL> select ascii('t') from dual;
+
+ASCII('T')
+----------
+       116
+
+SQL> select instr('hii payal . you are payal right?','payal') from dual;
+
+INSTR('HIIPAYAL.YOUAREPAYALRIGHT?','PAYAL')
+-------------------------------------------
+                                          5
+
+SQL>
