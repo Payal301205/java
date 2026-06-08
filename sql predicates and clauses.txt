@@ -1,0 +1,530 @@
+
+SQL*Plus: Release 11.2.0.2.0 Production on Mon Jun 8 11:22:01 2026
+
+Copyright (c) 1982, 2014, Oracle.  All rights reserved.
+
+SQL> connect
+Enter user-name: system
+Enter password:
+Connected.
+SQL> CREATE TABLE DEPT (
+  2      DEPTID NUMBER(5),
+  3      DNAME VARCHAR2(20),
+  4      ENAME VARCHAR2(20),
+  5      ECITY VARCHAR2(20),
+  6      MANAGER VARCHAR2(20),
+  7      BUDGET NUMBER(10)
+  8  );
+CREATE TABLE DEPT (
+             *
+ERROR at line 1:
+ORA-00955: name is already used by an existing object
+
+
+SQL> drop table dept;
+
+Table dropped.
+
+SQL> CREATE TABLE DEPT (
+  2      DEPTID NUMBER(5),
+  3      DNAME VARCHAR2(20),
+  4      ENAME VARCHAR2(20),
+  5      ECITY VARCHAR2(20),
+  6      MANAGER VARCHAR2(20),
+  7      BUDGET NUMBER(10)
+  8  );
+
+Table created.
+
+SQL> INSERT INTO DEPT VALUES (10, 'HR', 'RAHUL', 'NAGPUR', 'RAJESH', 500000);
+
+1 row created.
+
+SQL> INSERT INTO DEPT VALUES (20, 'SALES', 'AMIT', 'MUMBAI', 'SUNIL', 800000);
+
+1 row created.
+
+SQL> select * from dept;
+
+    DEPTID DNAME                ENAME                ECITY
+---------- -------------------- -------------------- --------------------
+MANAGER                  BUDGET
+-------------------- ----------
+        10 HR                   RAHUL                NAGPUR
+RAJESH                   500000
+
+        20 SALES                AMIT                 MUMBAI
+SUNIL                    800000
+
+
+SQL> SET LINESIZE 200;
+SQL> select * from dept;
+
+    DEPTID DNAME                ENAME                ECITY                MANAGER                  BUDGET
+---------- -------------------- -------------------- -------------------- -------------------- ----------
+        10 HR                   RAHUL                NAGPUR               RAJESH                   500000
+        20 SALES                AMIT                 MUMBAI               SUNIL                    800000
+
+SQL> INSERT INTO DEPT VALUES (30, 'IT', 'SNEHA', 'PUNE', 'VIKAS', 1200000);
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO DEPT VALUES (40, 'FINANCE', 'PRIYA', 'NAGPUR', 'RAMESH', 700000);
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO DEPT VALUES (50, 'MARKETING', 'ROHAN', 'DELHI', 'AJAY', 600000);
+
+1 row created.
+
+SQL> select * from dept;
+
+    DEPTID DNAME                ENAME                ECITY                MANAGER                  BUDGET
+---------- -------------------- -------------------- -------------------- -------------------- ----------
+        10 HR                   RAHUL                NAGPUR               RAJESH                   500000
+        20 SALES                AMIT                 MUMBAI               SUNIL                    800000
+        30 IT                   SNEHA                PUNE                 VIKAS                   1200000
+        40 FINANCE              PRIYA                NAGPUR               RAMESH                   700000
+        50 MARKETING            ROHAN                DELHI                AJAY                     600000
+
+SQL> select * from dept where ename like '%l';
+
+no rows selected
+
+SQL> select * from dept where ename like 'a%';
+
+no rows selected
+
+SQL> select * from dept where ename like '%e%';
+
+no rows selected
+
+SQL> select * from dept where ename like '%E%';
+
+    DEPTID DNAME                ENAME                ECITY                MANAGER                  BUDGET
+---------- -------------------- -------------------- -------------------- -------------------- ----------
+        30 IT                   SNEHA                PUNE                 VIKAS                   1200000
+
+SQL> select * from dept where ename like 'A%';
+
+    DEPTID DNAME                ENAME                ECITY                MANAGER                  BUDGET
+---------- -------------------- -------------------- -------------------- -------------------- ----------
+        20 SALES                AMIT                 MUMBAI               SUNIL                    800000
+
+SQL> select * from dept where ename like '%R';
+
+no rows selected
+
+SQL> select * from dept where ename like '%L';
+
+    DEPTID DNAME                ENAME                ECITY                MANAGER                  BUDGET
+---------- -------------------- -------------------- -------------------- -------------------- ----------
+        10 HR                   RAHUL                NAGPUR               RAJESH                   500000
+
+SQL> select * from dept where ename like '_M%';
+
+    DEPTID DNAME                ENAME                ECITY                MANAGER                  BUDGET
+---------- -------------------- -------------------- -------------------- -------------------- ----------
+        20 SALES                AMIT                 MUMBAI               SUNIL                    800000
+
+SQL> select * from dept where ename like '__M%';
+
+no rows selected
+
+SQL> select * from dept where ename like '_MI%';
+
+    DEPTID DNAME                ENAME                ECITY                MANAGER                  BUDGET
+---------- -------------------- -------------------- -------------------- -------------------- ----------
+        20 SALES                AMIT                 MUMBAI               SUNIL                    800000
+
+SQL> select 8 from dept where esal >30000 order by DESC;
+select 8 from dept where esal >30000 order by DESC
+                                              *
+ERROR at line 1:
+ORA-00936: missing expression
+
+
+SQL> select 8 from dept where esal >30000 order by esal DESC;
+select 8 from dept where esal >30000 order by esal DESC
+                                              *
+ERROR at line 1:
+ORA-00904: "ESAL": invalid identifier
+
+
+SQL> select * from dept order by ename DESC;
+
+    DEPTID DNAME                ENAME                ECITY                MANAGER                  BUDGET
+---------- -------------------- -------------------- -------------------- -------------------- ----------
+        30 IT                   SNEHA                PUNE                 VIKAS                   1200000
+        50 MARKETING            ROHAN                DELHI                AJAY                     600000
+        10 HR                   RAHUL                NAGPUR               RAJESH                   500000
+        40 FINANCE              PRIYA                NAGPUR               RAMESH                   700000
+        20 SALES                AMIT                 MUMBAI               SUNIL                    800000
+
+SQL> select * from dept order by ename asc;
+
+    DEPTID DNAME                ENAME                ECITY                MANAGER                  BUDGET
+---------- -------------------- -------------------- -------------------- -------------------- ----------
+        20 SALES                AMIT                 MUMBAI               SUNIL                    800000
+        40 FINANCE              PRIYA                NAGPUR               RAMESH                   700000
+        10 HR                   RAHUL                NAGPUR               RAJESH                   500000
+        50 MARKETING            ROHAN                DELHI                AJAY                     600000
+        30 IT                   SNEHA                PUNE                 VIKAS                   1200000
+
+SQL> select * from dept order by ename ;
+
+    DEPTID DNAME                ENAME                ECITY                MANAGER                  BUDGET
+---------- -------------------- -------------------- -------------------- -------------------- ----------
+        20 SALES                AMIT                 MUMBAI               SUNIL                    800000
+        40 FINANCE              PRIYA                NAGPUR               RAMESH                   700000
+        10 HR                   RAHUL                NAGPUR               RAJESH                   500000
+        50 MARKETING            ROHAN                DELHI                AJAY                     600000
+        30 IT                   SNEHA                PUNE                 VIKAS                   1200000
+
+SQL> select * from dept order by ename asc, budget desc;
+
+    DEPTID DNAME                ENAME                ECITY                MANAGER                  BUDGET
+---------- -------------------- -------------------- -------------------- -------------------- ----------
+        20 SALES                AMIT                 MUMBAI               SUNIL                    800000
+        40 FINANCE              PRIYA                NAGPUR               RAMESH                   700000
+        10 HR                   RAHUL                NAGPUR               RAJESH                   500000
+        50 MARKETING            ROHAN                DELHI                AJAY                     600000
+        30 IT                   SNEHA                PUNE                 VIKAS                   1200000
+
+SQL> INSERT INTO DEPT VALUES (50, 'MARKETING', 'ROHIT', 'DELHI', 'AJAY', 600000);
+
+1 row created.
+
+SQL> select * from dept order by ename asc, budget desc;
+
+    DEPTID DNAME                ENAME                ECITY                MANAGER                  BUDGET
+---------- -------------------- -------------------- -------------------- -------------------- ----------
+        20 SALES                AMIT                 MUMBAI               SUNIL                    800000
+        40 FINANCE              PRIYA                NAGPUR               RAMESH                   700000
+        10 HR                   RAHUL                NAGPUR               RAJESH                   500000
+        50 MARKETING            ROHAN                DELHI                AJAY                     600000
+        50 MARKETING            ROHIT                DELHI                AJAY                     600000
+        30 IT                   SNEHA                PUNE                 VIKAS                   1200000
+
+6 rows selected.
+
+SQL> select * from emp where esal between 10000 and 30000;
+
+     EMPID ENAME      ECITY            ESAL COUNTRY
+---------- ---------- ---------- ---------- ----------
+       100 n          ngp             10000
+       101 m          mumbai          12000
+       101 p          ngp             10000
+       105 payal      nagpur          10300
+
+SQL> select * from emp where esal not between 10000 and 30000;
+
+     EMPID ENAME      ECITY            ESAL COUNTRY
+---------- ---------- ---------- ---------- ----------
+       102 ram        pune           100000
+       106 raju       nagpur         100000
+
+SQL> select * from emp where (esal between 10000 and 30000) and not empid in(101,102);
+
+     EMPID ENAME      ECITY            ESAL COUNTRY
+---------- ---------- ---------- ---------- ----------
+       100 n          ngp             10000
+       105 payal      nagpur          10300
+
+SQL> select * from emp where ename between 'a' and 's';
+
+     EMPID ENAME      ECITY            ESAL COUNTRY
+---------- ---------- ---------- ---------- ----------
+       100 n          ngp             10000
+       101 m          mumbai          12000
+       101 p          ngp             10000
+       102 ram        pune           100000
+       105 payal      nagpur          10300
+       106 raju       nagpur         100000
+
+6 rows selected.
+
+SQL> select * from emp where ename  not between 'a' and 's';
+
+no rows selected
+
+SQL> select * from emp where ename  not between 'p' and 'raju' order by ename;
+
+     EMPID ENAME      ECITY            ESAL COUNTRY
+---------- ---------- ---------- ---------- ----------
+       101 m          mumbai          12000
+       100 n          ngp             10000
+       102 ram        pune           100000
+
+SQL> select count(empid) ,ecity from emp group by ecity;
+
+COUNT(EMPID) ECITY
+------------ ----------
+           2 nagpur
+           2 ngp
+           1 mumbai
+           1 pune
+
+SQL> select count(empid) ,ecity from emp group by ecity order by count(empid) desc;
+
+COUNT(EMPID) ECITY
+------------ ----------
+           2 nagpur
+           2 ngp
+           1 mumbai
+           1 pune
+
+SQL> select * from dept;
+
+    DEPTID DNAME                ENAME                ECITY                MANAGER                  BUDGET
+---------- -------------------- -------------------- -------------------- -------------------- ----------
+        10 HR                   RAHUL                NAGPUR               RAJESH                   500000
+        20 SALES                AMIT                 MUMBAI               SUNIL                    800000
+        30 IT                   SNEHA                PUNE                 VIKAS                   1200000
+        40 FINANCE              PRIYA                NAGPUR               RAMESH                   700000
+        50 MARKETING            ROHAN                DELHI                AJAY                     600000
+        50 MARKETING            ROHIT                DELHI                AJAY                     600000
+
+6 rows selected.
+
+SQL> select count(ename),ecity as 'dept_city' group by ecity;
+select count(ename),ecity as 'dept_city' group by ecity
+                             *
+ERROR at line 1:
+ORA-00923: FROM keyword not found where expected
+
+
+SQL> select count(ename),ecity as 'dept_city' from dept group by ecity;
+select count(ename),ecity as 'dept_city' from dept group by ecity
+                             *
+ERROR at line 1:
+ORA-00923: FROM keyword not found where expected
+
+
+SQL> select ename , count (dname) from dept group by dname;
+select ename , count (dname) from dept group by dname
+       *
+ERROR at line 1:
+ORA-00979: not a GROUP BY expression
+
+
+SQL> select count(empid) ,ecity from dept  group by  ecity having count(empid)>2;
+select count(empid) ,ecity from dept  group by  ecity having count(empid)>2
+                                                                   *
+ERROR at line 1:
+ORA-00904: "EMPID": invalid identifier
+
+
+SQL> select count(empid) ,ecity from emp  group by  ecity having count(empid)>2;
+
+no rows selected
+
+SQL> select * from emp;
+
+     EMPID ENAME      ECITY            ESAL COUNTRY
+---------- ---------- ---------- ---------- ----------
+       100 n          ngp             10000
+       101 m          mumbai          12000
+       101 p          ngp             10000
+       102 ram        pune           100000
+       105 payal      nagpur          10300
+       106 raju       nagpur         100000
+
+6 rows selected.
+
+SQL> select count(empid) ,ecity from emp  group by  ecity having count(empid)>=2;
+
+COUNT(EMPID) ECITY
+------------ ----------
+           2 nagpur
+           2 ngp
+
+SQL> select emp.ename, count(dept.dname) as deptcount from dept;
+select emp.ename, count(dept.dname) as deptcount from dept
+       *
+ERROR at line 1:
+ORA-00904: "EMP"."ENAME": invalid identifier
+
+
+SQL> select emp.ename, count(dept.dname) as deptcount from dept left join emp on dept.ename=emp.ename group by emp.ename;
+
+ENAME       DEPTCOUNT
+---------- ----------
+                    6
+
+
+
+SQL> connect
+Enter user-name: system
+Enter password:
+Connected.
+SQL> select count(empid) ,ename from emp group by ename;
+
+COUNT(EMPID) ENAME
+------------ ----------
+           1 ram
+           1 raju
+           1 m
+           1 n
+           1 p
+           1 payal
+
+6 rows selected.
+
+SQL> select * from emp where ename in (select ename from dept where ecity='mumbai';
+select * from emp where ename in (select ename from dept where ecity='mumbai'
+                                                                            *
+ERROR at line 1:
+ORA-00907: missing right parenthesis
+
+
+SQL> select * from emp where ename in (select ename from dept where ecity='mumbai');
+
+no rows selected
+
+SQL> select * from emp where ename in (select ename from dept where ecity='nagpur');
+
+no rows selected
+
+SQL> select * from dept;
+
+no rows selected
+
+SQL> desc dept
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ DEPTID                                             NUMBER(5)
+ DNAME                                              VARCHAR2(20)
+ ENAME                                              VARCHAR2(20)
+ ECITY                                              VARCHAR2(20)
+ MANAGER                                            VARCHAR2(20)
+ BUDGET                                             NUMBER(10)
+
+SQL> select * from dept;
+
+no rows selected
+
+SQL> INSERT INTO dept (deptid, dname, ename, ecity, manager, budget)
+  2  VALUES (10, 'HR', 'RAHUL', 'NAGPUR', 'RAJESH', 500000);
+
+1 row created.
+
+SQL> INSERT INTO dept (deptid, dname, ename, ecity, manager, budget)
+  2  VALUES (20, 'SALES', 'AMIT', 'MUMBAI', 'SURESH', 750000);
+
+1 row created.
+
+SQL>
+SQL> INSERT INTO dept (deptid, dname, ename, ecity, manager, budget)
+  2  VALUES (30, 'IT', 'PRIYA', 'PUNE', 'RAMESH', 900000);
+
+1 row created.
+
+SQL> select * from dept;
+
+    DEPTID DNAME                ENAME                ECITY
+---------- -------------------- -------------------- --------------------
+MANAGER                  BUDGET
+-------------------- ----------
+        10 HR                   RAHUL                NAGPUR
+RAJESH                   500000
+
+        20 SALES                AMIT                 MUMBAI
+SURESH                   750000
+
+        30 IT                   PRIYA                PUNE
+RAMESH                   900000
+
+
+SQL> SET LINESIZE 120;
+SQL> select * from dept;
+
+    DEPTID DNAME                ENAME                ECITY                MANAGER                  BUDGET
+---------- -------------------- -------------------- -------------------- -------------------- ----------
+        10 HR                   RAHUL                NAGPUR               RAJESH                   500000
+        20 SALES                AMIT                 MUMBAI               SURESH                   750000
+        30 IT                   PRIYA                PUNE                 RAMESH                   900000
+
+SQL> commit;
+
+Commit complete.
+
+SQL> alter table emp add(dob date);
+
+Table altered.
+
+SQL> UPDATE dept
+  2  SET budget = 1000000;
+
+3 rows updated.
+
+SQL> rollback;
+
+Rollback complete.
+
+SQL> UPDATE emp
+  2  SET dob = TO_DATE('15-08-2004','DD-MM-YYYY');
+
+6 rows updated.
+
+SQL> UPDATE emp set dob=to_date('12-12-2004', 'DD-MM-YYYY') where empid=101;
+
+2 rows updated.
+
+SQL> select * from emp;
+
+     EMPID ENAME      ECITY            ESAL COUNTRY    DOB
+---------- ---------- ---------- ---------- ---------- ---------
+       100 n          ngp             10000            15-AUG-04
+       101 m          mumbai          12000            12-DEC-04
+       101 p          ngp             10000            12-DEC-04
+       102 ram        pune           100000            15-AUG-04
+       105 payal      nagpur          10300            15-AUG-04
+       106 raju       nagpur         100000            15-AUG-04
+
+6 rows selected.
+
+SQL> select * from emp where dob between '15-SEPT-03' and '30-DEC-05';
+select * from emp where dob between '15-SEPT-03' and '30-DEC-05'
+                                    *
+ERROR at line 1:
+ORA-01841: (full) year must be between -4713 and +9999, and not be 0
+
+
+SQL> select * from emp where dob between '15-SEP-03' and '30-DEC-05';
+
+     EMPID ENAME      ECITY            ESAL COUNTRY    DOB
+---------- ---------- ---------- ---------- ---------- ---------
+       100 n          ngp             10000            15-AUG-04
+       101 m          mumbai          12000            12-DEC-04
+       101 p          ngp             10000            12-DEC-04
+       102 ram        pune           100000            15-AUG-04
+       105 payal      nagpur          10300            15-AUG-04
+       106 raju       nagpur         100000            15-AUG-04
+
+6 rows selected.
+
+SQL> SELECT *
+  2  FROM emp
+  3  WHERE ecity IS NULL;
+
+no rows selected
+
+SQL> SELECT *
+  2  FROM emp
+  3  WHERE ecity IS NOT NULL;
+
+     EMPID ENAME      ECITY            ESAL COUNTRY    DOB
+---------- ---------- ---------- ---------- ---------- ---------
+       100 n          ngp             10000            15-AUG-04
+       101 m          mumbai          12000            12-DEC-04
+       101 p          ngp             10000            12-DEC-04
+       102 ram        pune           100000            15-AUG-04
+       105 payal      nagpur          10300            15-AUG-04
+       106 raju       nagpur         100000            15-AUG-04
+
+6 rows selected.
+
+SQL>
