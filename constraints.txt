@@ -1,0 +1,101 @@
+
+SQL*Plus: Release 11.2.0.2.0 Production on Tue Jun 9 10:02:04 2026
+
+Copyright (c) 1982, 2014, Oracle.  All rights reserved.
+
+SQL> connect
+Enter user-name: system
+Enter password:
+Connected.
+SQL> create table person2 (pid number(4) not null primary key,fname varchar(9) not null, lname varchar(9), age number(3));
+
+Table created.
+
+SQL> create table person3 (pid number(4) not null ,fname varchar(9) not null, lname varchar(9), age number(3), constraint pk_person primary key(pid,lname));
+
+
+Table created.
+
+SQL> alter table person3 add primary key(pid);
+alter table person3 add primary key(pid)
+                        *
+ERROR at line 1:
+ORA-02260: table can have only one primary key
+
+
+SQL> alter table person3 drop primary key(pid);
+alter table person3 drop primary key(pid)
+                                    *
+ERROR at line 1:
+ORA-01735: invalid ALTER TABLE option
+
+
+SQL> alter table person3 drop primary key;
+
+Table altered.
+
+SQL> alter table person3 add primary key(pid);
+
+Table altered.
+
+SQL> insert into person2(pid ,lname,age) values (101,'l',20);
+insert into person2(pid ,lname,age) values (101,'l',20)
+*
+ERROR at line 1:
+ORA-01400: cannot insert NULL into ("SYSTEM"."PERSON2"."FNAME")
+
+
+SQL> insert into person2(fname,lname,age) values ('y','l',20);
+insert into person2(fname,lname,age) values ('y','l',20)
+*
+ERROR at line 1:
+ORA-01400: cannot insert NULL into ("SYSTEM"."PERSON2"."PID")
+
+
+SQL> insert into person3(pid,fname,age) values (102,'l',20);
+
+1 row created.
+
+SQL> create table person4 (pid number(4) not null primary key,fname varchar(9) not null, lname varchar(9), age number(3) default 23);
+
+Table created.
+
+SQL> insert into person4(pid,fname,age) values (102,'l',20);
+
+1 row created.
+
+SQL> select * from person2;
+
+no rows selected
+
+SQL> select * from person3;
+
+       PID FNAME     LNAME            AGE
+---------- --------- --------- ----------
+       102 l                           20
+
+SQL> select * from person4;
+
+       PID FNAME     LNAME            AGE
+---------- --------- --------- ----------
+       102 l                           20
+
+SQL> insert into person4(pid,fname) values (102,'l');
+insert into person4(pid,fname) values (102,'l')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (SYSTEM.SYS_C007105) violated
+
+
+SQL> insert into person4(pid,fname) values (103,'l');
+
+1 row created.
+
+SQL> select * from person4;
+
+       PID FNAME     LNAME            AGE
+---------- --------- --------- ----------
+       102 l                           20
+       103 l                           23
+
+SQL>

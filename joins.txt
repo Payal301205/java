@@ -1,0 +1,220 @@
+
+SQL*Plus: Release 11.2.0.2.0 Production on Tue Jun 9 11:02:10 2026
+
+Copyright (c) 1982, 2014, Oracle.  All rights reserved.
+
+SQL> connect
+Enter user-name: ystem
+Enter password:
+ERROR:
+ORA-01017: invalid username/password; logon denied
+
+
+SQL> connect
+Enter user-name: system
+Enter password:
+Connected.
+SQL> CREATE TABLE emp (
+  2      eno INT PRIMARY KEY,
+  3      ename VARCHAR(50),
+  4      salary DECIMAL(10,2),
+  5      ecity VARCHAR(50),
+  6      dno INT
+  7  );
+CREATE TABLE emp (
+             *
+ERROR at line 1:
+ORA-00955: name is already used by an existing object
+
+
+SQL> CREATE TABLE emp17 (
+  2      eno INT PRIMARY KEY,
+  3      ename VARCHAR(50),
+  4      salary DECIMAL(10,2),
+  5      ecity VARCHAR(50),
+  6      dno INT
+  7  );
+
+Table created.
+
+SQL> INSERT INTO emp17 VALUES
+  2  (101,'Amit',50000,'Pune',1),
+  3  (102,'Neha',55000,'Mumbai',2),
+  4  (103,'Rahul',60000,'Pune',1),
+  5  (104,'Priya',45000,'Nagpur',3),
+  6  (105,'Karan',70000,'Mumbai',2),
+  7  (106,'Sneha',52000,'Pune',1),
+  8  (107,'Rohit',48000,'Delhi',4),
+  9  (108,'Anjali',65000,'Nagpur',3),
+ 10  (109,'Vikas',58000,'Delhi',4),
+ 11  (110,'Pooja',62000,'Mumbai',2);
+(101,'Amit',50000,'Pune',1),
+                           *
+ERROR at line 2:
+ORA-00933: SQL command not properly ended
+
+
+SQL> INSERT INTO emp17 VALUES
+  2  (101,'Amit',50000,'Pune',1);
+
+1 row created.
+
+SQL> INSERT INTO emp17 VALUES (102,'Neha',55000,'Mumbai',2);
+
+1 row created.
+
+SQL> INSERT INTO emp17 VALUES (103,'Rahul',60000,'Pune',1);
+
+1 row created.
+
+SQL> CREATE TABLE department (
+  2      dno INT PRIMARY KEY,
+  3      dname VARCHAR(50)
+  4  );
+
+Table created.
+
+SQL> INSERT INTO department VALUES
+  2  (1,'HR');
+
+1 row created.
+
+SQL> INSERT INTO department VALUES (2,'IT');
+
+1 row created.
+
+SQL> CREATE TABLE Orders (
+  2      OID INT PRIMARY KEY,
+  3      ProductName VARCHAR(50),
+  4      Amount DECIMAL(10,2),
+  5      eno INT,
+  6      dno INT
+  7  );
+
+Table created.
+
+SQL> INSERT INTO Orders VALUES
+  2  (1001,'Laptop',55000,101,1),
+  3
+SQL> INSERT INTO Orders VALUES
+  2  (1001,'Laptop',55000,101,1);
+
+1 row created.
+
+SQL> INSERT INTO Orders VALUES (1002,'Mouse',1000,102,2);
+
+1 row created.
+
+SQL> select orders.oid,emp17.ename from orders inner join emp17 on orders.eno=emp17.eno;
+
+       OID ENAME
+---------- --------------------------------------------------
+      1001 Amit
+      1002 Neha
+
+SQL> selct orders.oid,emp17.ename,department.dname from (orders inner join emp17 on orders.eno= emp17.eno) inner join department on orders.dno=department.dno);
+SP2-0734: unknown command beginning "selct orde..." - rest of line ignored.
+SQL> select orders.oid,emp17.ename,department.dname from (orders inner join emp17 on orders.eno= emp17.eno) inner join department on orders.dno=department.dno);
+select orders.oid,emp17.ename,department.dname from (orders inner join emp17 on orders.eno= emp17.eno) inner join department on orders.dno=department.dno)
+                                                                                                                                                         *
+ERROR at line 1:
+ORA-00933: SQL command not properly ended
+
+
+SQL> select orders.oid,emp17.ename,department.dname from ((orders inner join emp17 on orders.eno= emp17.eno) inner join department on orders.dno=department.dno);
+
+       OID ENAME
+---------- --------------------------------------------------
+DNAME
+--------------------------------------------------
+      1001 Amit
+HR
+
+      1002 Neha
+IT
+
+
+SQL> SET LINESIZE 100;
+SQL> select orders.oid,emp17.ename,department.dname from ((orders inner join emp17 on orders.eno= emp17.eno) inner join department on orders.dno=department.dno);
+
+       OID ENAME
+---------- --------------------------------------------------
+DNAME
+--------------------------------------------------
+      1001 Amit
+HR
+
+      1002 Neha
+IT
+
+
+SQL> SET LINESIZE 150;
+SQL> select orders.oid,emp17.ename,department.dname from ((orders inner join emp17 on orders.eno= emp17.eno) inner join department on orders.dno=department.dno);
+
+       OID ENAME                                              DNAME
+---------- -------------------------------------------------- --------------------------------------------------
+      1001 Amit                                               HR
+      1002 Neha                                               IT
+
+//select all employees and any orders if they might have
+SQL> select emp17.ename,orders.oid from emp17 left join orders on emp17.eno=orders.eno order by emp17.ename;
+
+ENAME                                                     OID
+-------------------------------------------------- ----------
+Amit                                                     1001
+Neha                                                     1002
+Rahul
+
+//selct all employees and any orders they have already ordered
+SQL> select orders.oid,emp17.ename from orders right join emp17 on orders.eno=emp17.eno order by orders.oid;
+
+       OID ENAME
+---------- --------------------------------------------------
+      1001 Amit
+      1002 Neha
+           Rahul
+
+SQL>
+SQL> select a.ename as empname1, b.ename as empname2,a.ecity from emp17 a,emp17 b where a,eno<>B.eno and a.ecity=b.ecity order by a.ecity;
+select a.ename as empname1, b.ename as empname2,a.ecity from emp17 a,emp17 b where a,eno<>B.eno and a.ecity=b.ecity order by a.ecity
+                                                                                    *
+ERROR at line 1:
+ORA-00920: invalid relational operator
+
+
+SQL> select a.ename as empname1, b.ename as empname2,a.ecity from emp17 a.emp17 b where a.eno<>B.eno and a.ecity=b.ecity order by a.ecity;
+select a.ename as empname1, b.ename as empname2,a.ecity from emp17 a.emp17 b where a.eno<>B.eno and a.ecity=b.ecity order by a.ecity
+                                                                    *
+ERROR at line 1:
+ORA-00933: SQL command not properly ended
+
+
+SQL> select a.ename as empname1, b.ename as empname2,a.ecity from emp17 a, emp17 b where a.eno<>B.eno and a.ecity=b.ecity order by a.ecity;
+
+EMPNAME1                                           EMPNAME2
+-------------------------------------------------- --------------------------------------------------
+ECITY
+--------------------------------------------------
+Amit                                               Rahul
+Pune
+
+Rahul                                              Amit
+Pune
+
+SQL> select emp17.ename,orders.oid from emp17 full outer join orders on emp17.eno=Orders.eno order by emp17.ename;
+
+ENAME                                                     OID
+-------------------------------------------------- ----------
+Amit                                                     1001
+Neha                                                     1002
+Rahul
+
+SQL> select emp17.ename,orders.oid from emp17 full join orders on emp17.eno=Orders.eno order by emp17.ename;
+
+ENAME                                                     OID
+-------------------------------------------------- ----------
+Amit                                                     1001
+Neha                                                     1002
+Rahul
+
+SQL>
