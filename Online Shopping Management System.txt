@@ -1,0 +1,1814 @@
+
+"Online Shopping Management System"
+
+
+
+SQL> CREATE TABLE customer (
+  2      cust_id VARCHAR(5) PRIMARY KEY,
+  3      f_name VARCHAR(50),
+  4      l_name VARCHAR(50),
+  5      area VARCHAR(10),
+  6      phone_no VARCHAR(10)
+  7  );
+
+Table created.
+
+SQL> CREATE TABLE product (
+  2      product_id VARCHAR(5) PRIMARY KEY,
+  3      product_name VARCHAR(50),
+  4      category_id VARCHAR(5),
+  5      price DECIMAL(8,2),
+  6      stock INT,
+  7      FOREIGN KEY (category_id) REFERENCES category(category_id)
+  8  );
+    FOREIGN KEY (category_id) REFERENCES category(category_id)
+                                         *
+ERROR at line 7:
+ORA-00942: table or view does not exist
+
+
+SQL> CREATE TABLE category (
+  2      category_id VARCHAR(5) PRIMARY KEY,
+  3      category_name VARCHAR(30)
+  4  );
+
+Table created.
+
+SQL> CREATE TABLE product (
+  2      product_id VARCHAR(5) PRIMARY KEY,
+  3      product_name VARCHAR(50),
+  4      category_id VARCHAR(5),
+  5      price DECIMAL(8,2),
+  6      stock INT,
+  7      FOREIGN KEY (category_id) REFERENCES category(category_id)
+  8  );
+
+Table created.
+
+SQL> CREATE TABLE orders (
+  2      order_id VARCHAR(5) PRIMARY KEY,
+  3      cust_id VARCHAR(5),
+  4      order_date DATE,
+  5      total_amount DECIMAL(10,2),
+  6      FOREIGN KEY (cust_id) REFERENCES customer(cust_id)
+  7  );
+CREATE TABLE orders (
+             *
+ERROR at line 1:
+ORA-00955: name is already used by an existing object
+
+
+SQL> drop table orders;
+
+Table dropped.
+
+SQL> CREATE TABLE orders (
+  2      order_id VARCHAR(5) PRIMARY KEY,
+  3      cust_id VARCHAR(5),
+  4      order_date DATE,
+  5      total_amount DECIMAL(10,2),
+  6      FOREIGN KEY (cust_id) REFERENCES customer(cust_id)
+  7  );
+
+Table created.
+
+
+SQL> CREATE TABLE order_items (
+  2      order_item_id NUMBER(5) PRIMARY KEY,
+  3      order_id VARCHAR2(5),
+  4      product_id VARCHAR2(5),
+  5      quantity NUMBER(5),
+  6      price NUMBER(8,2),
+  7      CONSTRAINT fk_order
+  8          FOREIGN KEY (order_id)
+  9          REFERENCES orders(order_id),
+ 10      CONSTRAINT fk_product
+ 11          FOREIGN KEY (product_id)
+ 12          REFERENCES product(product_id)
+ 13  );
+
+Table created.
+
+SQL> CREATE TABLE invoice (
+  2      inv_no VARCHAR(5) PRIMARY KEY,
+  3      order_id VARCHAR(5),
+  4      inv_date DATE,
+  5      amount DECIMAL(10,2),
+  6      FOREIGN KEY (order_id) REFERENCES orders(order_id)
+  7  );
+
+Table created.
+
+SQL> CREATE TABLE payment (
+  2  payment_id VARCHAR(5) PRIMARY KEY,
+  3  inv_no VARCHAR(5),
+  4  payment_date DATE,
+  5  payment_mode VARCHAR(20),
+  6  payment_status VARCHAR(15),
+  7  FOREIGN KEY (inv_no) REFERENCES invoice(inv_no)
+  8  );
+
+Table created.
+
+SQL> INSERT INTO customer VALUES ('C01','Payal','Taitkar','DA','9876543210');
+
+1 row created.
+
+SQL> INSERT INTO customer VALUES ('C02','Rajesh','Sharma','MU','9876543211');
+
+1 row created.
+
+SQL> INSERT INTO customer VALUES ('C03','Priya','Patil','GH','9876543212');
+
+1 row created.
+
+SQL> INSERT INTO customer VALUES ('C04','Amit','Joshi','DA','9876543213');
+
+1 row created.
+
+SQL> INSERT INTO customer VALUES ('C05','Neha','Verma','JK','9876543214');
+
+1 row created.
+
+SQL> INSERT INTO customer VALUES ('C06','Pooja','Singh','MU','9876543215');
+
+1 row created.
+
+SQL> INSERT INTO customer VALUES ('C07','Rohan','Gupta','GH','9876543216');
+
+1 row created.
+
+SQL> INSERT INTO customer VALUES ('C08','Kiran','Mehta','DA','9876543217');
+
+1 row created.
+
+SQL> INSERT INTO customer VALUES ('C09','Sonal','Jain','MU','9876543218');
+
+1 row created.
+
+SQL> INSERT INTO category VALUES ('CT01','Electronics');
+
+1 row created.
+
+SQL> INSERT INTO category VALUES ('CT02','Clothing');
+
+1 row created.
+
+SQL> INSERT INTO category VALUES ('CT03','Books');
+
+1 row created.
+
+SQL> INSERT INTO category VALUES ('CT04','Furniture');
+
+1 row created.
+
+SQL> INSERT INTO product VALUES ('PR01','Laptop','CT01',50000,20);
+
+1 row created.
+
+SQL> INSERT INTO product VALUES ('PR02','Mobile','CT01',20000,30);
+
+1 row created.
+
+SQL> INSERT INTO product VALUES ('PR03','Shirt','CT02',800,50);
+
+1 row created.
+
+SQL> INSERT INTO product VALUES ('PR04','Jeans','CT02',1200,40);
+
+1 row created.
+
+SQL> INSERT INTO product VALUES ('PR05','Java Book','CT03',450,25);
+
+1 row created.
+
+SQL> INSERT INTO product VALUES ('PR06','Chair','CT04',3000,15);
+
+1 row created.
+
+SQL> INSERT INTO product VALUES ('PR07','Table','CT04',5000,10);
+
+1 row created.
+
+SQL> INSERT INTO product VALUES ('PR08','Novel','CT03',250,35);
+
+1 row created.
+
+SQL> INSERT INTO orders VALUES ('O01','C01',TO_DATE('10-07-2023','DD-MM-YYYY'),50000);
+
+1 row created.
+
+SQL> INSERT INTO orders VALUES ('O02','C02',TO_DATE('15-07-2023','DD-MM-YYYY'),20000);
+
+1 row created.
+
+SQL> INSERT INTO orders VALUES ('O03','C03',TO_DATE('20-07-2023','DD-MM-YYYY'),1250);
+
+1 row created.
+
+SQL> INSERT INTO orders VALUES ('O04','C04',TO_DATE('05-08-2023','DD-MM-YYYY'),3000);
+
+1 row created.
+
+SQL> INSERT INTO orders VALUES ('O05','C02',TO_DATE('12-08-2023','DD-MM-YYYY'),10000);
+
+1 row created.
+
+SQL> INSERT INTO orders VALUES ('O06','C05',TO_DATE('18-08-2023','DD-MM-YYYY'),5000);
+
+1 row created.
+
+SQL> INSERT INTO orders VALUES ('O07','C06',TO_DATE('22-08-2023','DD-MM-YYYY'),450);
+
+1 row created.
+
+SQL> INSERT INTO orders VALUES ('O08','C07',TO_DATE('25-08-2023','DD-MM-YYYY'),800);
+
+1 row created.
+
+SQL> INSERT INTO order_items VALUES (1,'O01','PR01',1,50000);
+
+1 row created.
+
+SQL> INSERT INTO order_items VALUES (2,'O02','PR02',1,20000);
+
+1 row created.
+
+SQL> INSERT INTO order_items VALUES (3,'O03','PR03',1,800);
+
+1 row created.
+
+SQL> INSERT INTO order_items VALUES (4,'O03','PR08',1,250);
+
+1 row created.
+
+SQL> INSERT INTO order_items VALUES (5,'O04','PR06',1,3000);
+
+1 row created.
+
+SQL> INSERT INTO order_items VALUES (6,'O05','PR07',2,5000);
+
+1 row created.
+
+SQL> INSERT INTO order_items VALUES (7,'O06','PR07',1,5000);
+
+1 row created.
+
+SQL> INSERT INTO order_items VALUES (8,'O07','PR05',1,450);
+
+1 row created.
+
+SQL> INSERT INTO order_items VALUES (9,'O08','PR03',1,800);
+
+1 row created.
+
+SQL> INSERT INTO invoice VALUES ('I01','O01',TO_DATE('11-07-2023','DD-MM-YYYY'),50000);
+
+1 row created.
+
+SQL> INSERT INTO invoice VALUES ('I02','O02',TO_DATE('16-07-2023','DD-MM-YYYY'),20000);
+
+1 row created.
+
+SQL> INSERT INTO invoice VALUES ('I03','O03',TO_DATE('21-07-2023','DD-MM-YYYY'),1250);
+
+1 row created.
+
+SQL> INSERT INTO invoice VALUES ('I04','O04',TO_DATE('06-08-2023','DD-MM-YYYY'),3000);
+
+1 row created.
+
+SQL> INSERT INTO invoice VALUES ('I05','O05',TO_DATE('13-08-2023','DD-MM-YYYY'),10000);
+
+1 row created.
+
+SQL> INSERT INTO invoice VALUES ('I06','O06',TO_DATE('19-08-2023','DD-MM-YYYY'),5000);
+
+1 row created.
+
+SQL> INSERT INTO invoice VALUES ('I07','O07',TO_DATE('23-08-2023','DD-MM-YYYY'),450);
+
+1 row created.
+
+SQL> INSERT INTO invoice VALUES ('I08','O08',TO_DATE('26-08-2023','DD-MM-YYYY'),800);
+
+1 row created.
+
+SQL> INSERT INTO payment VALUES ('P01','I01',TO_DATE('11-07-2023','DD-MM-YYYY'),'UPI','SUCCESS');
+
+1 row created.
+
+SQL> INSERT INTO payment VALUES ('P02','I02',TO_DATE('16-07-2023','DD-MM-YYYY'),'CARD','SUCCESS');
+
+1 row created.
+
+SQL> INSERT INTO payment VALUES ('P03','I03',TO_DATE('21-07-2023','DD-MM-YYYY'),'UPI','FAILED');
+
+1 row created.
+
+SQL> INSERT INTO payment VALUES ('P04','I04',TO_DATE('06-08-2023','DD-MM-YYYY'),'NETBANKING','SUCCESS');
+
+1 row created.
+
+SQL> INSERT INTO payment VALUES ('P05','I05',TO_DATE('13-08-2023','DD-MM-YYYY'),'UPI','SUCCESS');
+
+1 row created.
+
+SQL> INSERT INTO payment VALUES ('P06','I06',TO_DATE('19-08-2023','DD-MM-YYYY'),'CARD','FAILED');
+
+1 row created.
+
+SQL> INSERT INTO payment VALUES ('P07','I07',TO_DATE('23-08-2023','DD-MM-YYYY'),'UPI','SUCCESS');
+
+1 row created.
+
+SQL> INSERT INTO payment VALUES ('P08','I08',TO_DATE('26-08-2023','DD-MM-YYYY'),'CARD','SUCCESS');
+
+1 row created.
+
+SQL> INSERT INTO payment VALUES ('P09','I05',TO_DATE('14-08-2023','DD-MM-YYYY'),'UPI','FAILED');
+
+1 row created.
+
+SQL> COMMIT;
+
+Commit complete.
+
+
+
+
+CUSTOMER TABLE–Based 
+
+1. Display all records from the CUSTOMER table.
+
+SQL> select * from customer;
+
+CUST_ F_NAME
+----- --------------------------------------------------
+L_NAME                                             AREA       PHONE_NO
+-------------------------------------------------- ---------- ----------
+C01   Payal
+Taitkar                                            DA         9876543210
+
+C02   Rajesh
+Sharma                                             MU         9876543211
+
+C03   Priya
+Patil                                              GH         9876543212
+
+
+CUST_ F_NAME
+----- --------------------------------------------------
+L_NAME                                             AREA       PHONE_NO
+-------------------------------------------------- ---------- ----------
+C04   Amit
+Joshi                                              DA         9876543213
+
+C05   Neha
+Verma                                              JK         9876543214
+
+C06   Pooja
+Singh                                              MU         9876543215
+
+
+CUST_ F_NAME
+----- --------------------------------------------------
+L_NAME                                             AREA       PHONE_NO
+-------------------------------------------------- ---------- ----------
+C07   Rohan
+Gupta                                              GH         9876543216
+
+C08   Kiran
+Mehta                                              DA         9876543217
+
+C09   Sonal
+Jain                                               MU         9876543218
+
+
+9 rows selected.
+
+SQL> SET LINESIZE 150;
+SQL> select * from customer;
+
+CUST_ F_NAME                                             L_NAME                                             AREA       PHONE_NO
+----- -------------------------------------------------- -------------------------------------------------- ---------- ----------
+C01   Payal                                              Taitkar                                            DA         9876543210
+C02   Rajesh                                             Sharma                                             MU         9876543211
+C03   Priya                                              Patil                                              GH         9876543212
+C04   Amit                                               Joshi                                              DA         9876543213
+C05   Neha                                               Verma                                              JK         9876543214
+C06   Pooja                                              Singh                                              MU         9876543215
+C07   Rohan                                              Gupta                                              GH         9876543216
+C08   Kiran                                              Mehta                                              DA         9876543217
+C09   Sonal                                              Jain                                               MU         9876543218
+
+9 rows selected.
+
+SQL> SET LINESIZE 100;
+SQL> select * from customer;
+
+CUST_ F_NAME
+----- --------------------------------------------------
+L_NAME                                             AREA       PHONE_NO
+-------------------------------------------------- ---------- ----------
+C01   Payal
+Taitkar                                            DA         9876543210
+
+C02   Rajesh
+Sharma                                             MU         9876543211
+
+C03   Priya
+Patil                                              GH         9876543212
+
+
+CUST_ F_NAME
+----- --------------------------------------------------
+L_NAME                                             AREA       PHONE_NO
+-------------------------------------------------- ---------- ----------
+C04   Amit
+Joshi                                              DA         9876543213
+
+C05   Neha
+Verma                                              JK         9876543214
+
+C06   Pooja
+Singh                                              MU         9876543215
+
+
+CUST_ F_NAME
+----- --------------------------------------------------
+L_NAME                                             AREA       PHONE_NO
+-------------------------------------------------- ---------- ----------
+C07   Rohan
+Gupta                                              GH         9876543216
+
+C08   Kiran
+Mehta                                              DA         9876543217
+
+C09   Sonal
+Jain                                               MU         9876543218
+
+
+9 rows selected.
+
+
+2. Find the first name and area of customer with cust_id = 'C03'. 
+
+
+SQL> select f_name ,area from customer where cust_id='C03';
+
+F_NAME                                             AREA
+-------------------------------------------------- ----------
+Priya                                              GH
+
+
+3. List names and phone numbers of all customers. 
+
+SQL> select f_name,l_name,phone_no from customer;
+
+F_NAME
+--------------------------------------------------
+L_NAME                                             PHONE_NO
+-------------------------------------------------- ----------
+Payal
+Taitkar                                            9876543210
+
+Rajesh
+Sharma                                             9876543211
+
+Priya
+Patil                                              9876543212
+
+
+F_NAME
+--------------------------------------------------
+L_NAME                                             PHONE_NO
+-------------------------------------------------- ----------
+Amit
+Joshi                                              9876543213
+
+Neha
+Verma                                              9876543214
+
+Pooja
+Singh                                              9876543215
+
+
+F_NAME
+--------------------------------------------------
+L_NAME                                             PHONE_NO
+-------------------------------------------------- ----------
+Rohan
+Gupta                                              9876543216
+
+Kiran
+Mehta                                              9876543217
+
+Sonal
+Jain                                               9876543218
+
+
+9 rows selected.
+
+
+4. Count the total number of customers. 
+
+SQL> select count(cust_id) as customer_count from customer;
+
+CUSTOMER_COUNT
+--------------
+             9
+
+
+5. Find customers staying in area 'DA', 'MU', or 'GH'. 
+
+SQL> select cust_id from customer where area in('DA','MU','GH');
+
+CUST_
+-----
+C01
+C02
+C03
+C04
+C06
+C07
+C08
+C09
+
+8 rows selected.
+
+SQL> select cust_id from customer where area in('DA','mu','GH');//case sensitive
+
+CUST_
+-----
+C01
+C03
+C04
+C07
+C08
+
+
+6. Change the area of customer 'C03' to 'JK'. 
+
+SQL> update customer set area='JK' where cust_id='C03';
+
+1 row updated.
+
+SQL> select * from customer;
+
+CUST_ F_NAME
+----- --------------------------------------------------
+L_NAME                                             AREA       PHONE_NO
+-------------------------------------------------- ---------- ----------
+C01   Payal
+Taitkar                                            DA         9876543210
+
+C02   Rajesh
+Sharma                                             MU         9876543211
+
+C03   Priya
+Patil                                              JK         9876543212
+
+
+CUST_ F_NAME
+----- --------------------------------------------------
+L_NAME                                             AREA       PHONE_NO
+-------------------------------------------------- ---------- ----------
+C04   Amit
+Joshi                                              DA         9876543213
+
+C05   Neha
+Verma                                              JK         9876543214
+
+C06   Pooja
+Singh                                              MU         9876543215
+
+
+CUST_ F_NAME
+----- --------------------------------------------------
+L_NAME                                             AREA       PHONE_NO
+-------------------------------------------------- ---------- ----------
+C07   Rohan
+Gupta                                              GH         9876543216
+
+C08   Kiran
+Mehta                                              DA         9876543217
+
+C09   Sonal
+Jain                                               MU         9876543218
+
+
+9 rows selected.
+
+SQL> rollback
+  2  ;
+
+Rollback complete.
+
+SQL> select * from customer;
+
+CUST_ F_NAME
+----- --------------------------------------------------
+L_NAME                                             AREA       PHONE_NO
+-------------------------------------------------- ---------- ----------
+C01   Payal
+Taitkar                                            DA         9876543210
+
+C02   Rajesh
+Sharma                                             MU         9876543211
+
+C03   Priya
+Patil                                              GH         9876543212
+
+
+CUST_ F_NAME
+----- --------------------------------------------------
+L_NAME                                             AREA       PHONE_NO
+-------------------------------------------------- ---------- ----------
+C04   Amit
+Joshi                                              DA         9876543213
+
+C05   Neha
+Verma                                              JK         9876543214
+
+C06   Pooja
+Singh                                              MU         9876543215
+
+
+CUST_ F_NAME
+----- --------------------------------------------------
+L_NAME                                             AREA       PHONE_NO
+-------------------------------------------------- ---------- ----------
+C07   Rohan
+Gupta                                              GH         9876543216
+
+C08   Kiran
+Mehta                                              DA         9876543217
+
+C09   Sonal
+Jain                                               MU         9876543218
+
+
+9 rows selected.
+
+
+6. Change the area of customer 'C01' to 'JK'. 
+
+SQL> update customer set area='JK' where cust_id='C01';
+
+1 row updated.
+
+
+7. Find customers whose first name starts with the letter 'P'. 
+
+SQL> select * from customer where f_name like 'P%';
+
+CUST_ F_NAME
+----- --------------------------------------------------
+L_NAME                                             AREA       PHONE_NO
+-------------------------------------------------- ---------- ----------
+C01   Payal
+Taitkar                                            JK         9876543210
+
+C03   Priya
+Patil                                              GH         9876543212
+
+C06   Pooja
+Singh                                              MU         9876543215
+
+
+8. Find customers whose area has 'A' as the second character. 
+
+SQL> select * from customer where area like '_A%';
+
+CUST_ F_NAME
+----- --------------------------------------------------
+L_NAME                                             AREA       PHONE_NO
+-------------------------------------------------- ---------- ----------
+C04   Amit
+Joshi                                              DA         9876543213
+
+C08   Kiran
+Mehta                                              DA         9876543217
+
+
+9. Update the phone number of customer 'Rajesh' to 567889. 
+
+SQL> update customer set phone_no=566789 where f_name='Rajesh';
+
+1 row updated.
+
+SQL> select * from customer;
+
+CUST_ F_NAME
+----- --------------------------------------------------
+L_NAME                                             AREA       PHONE_NO
+-------------------------------------------------- ---------- ----------
+C01   Payal
+Taitkar                                            JK         9876543210
+
+C02   Rajesh
+Sharma                                             MU         566789
+
+C03   Priya
+Patil                                              GH         9876543212
+
+
+CUST_ F_NAME
+----- --------------------------------------------------
+L_NAME                                             AREA       PHONE_NO
+-------------------------------------------------- ---------- ----------
+C04   Amit
+Joshi                                              DA         9876543213
+
+C05   Neha
+Verma                                              JK         9876543214
+
+C06   Pooja
+Singh                                              MU         9876543215
+
+
+CUST_ F_NAME
+----- --------------------------------------------------
+L_NAME                                             AREA       PHONE_NO
+-------------------------------------------------- ---------- ----------
+C07   Rohan
+Gupta                                              GH         9876543216
+
+C08   Kiran
+Mehta                                              DA         9876543217
+
+C09   Sonal
+Jain                                               MU         9876543218
+
+
+9 rows selected.
+
+
+10. Delete customer with cust_id = 'C09'.
+SQL> delete from customer where cust_id='C09';
+
+1 row deleted.
+
+SQL> select * from customer;
+
+CUST_ F_NAME
+----- --------------------------------------------------
+L_NAME                                             AREA       PHONE_NO
+-------------------------------------------------- ---------- ----------
+C01   Payal
+Taitkar                                            JK         9876543210
+
+C02   Rajesh
+Sharma                                             MU         566789
+
+C03   Priya
+Patil                                              GH         9876543212
+
+
+CUST_ F_NAME
+----- --------------------------------------------------
+L_NAME                                             AREA       PHONE_NO
+-------------------------------------------------- ---------- ----------
+C04   Amit
+Joshi                                              DA         9876543213
+
+C05   Neha
+Verma                                              JK         9876543214
+
+C06   Pooja
+Singh                                              MU         9876543215
+
+
+CUST_ F_NAME
+----- --------------------------------------------------
+L_NAME                                             AREA       PHONE_NO
+-------------------------------------------------- ---------- ----------
+C07   Rohan
+Gupta                                              GH         9876543216
+
+C08   Kiran
+Mehta                                              DA         9876543217
+
+
+8 rows selected.
+
+
+11. Display all product categories. 
+
+SQL> select product.product_name, category.category_name from product,category where product.category_id=category.category_id;
+
+PRODUCT_NAME                                       CATEGORY_NAME
+-------------------------------------------------- ------------------------------
+Laptop                                             Electronics
+Mobile                                             Electronics
+Shirt                                              Clothing
+Jeans                                              Clothing
+Java Book                                          Books
+Chair                                              Furniture
+Table                                              Furniture
+Novel                                              Books
+
+8 rows selected.
+
+
+12. List all products with price greater than 150. 
+
+SQL> select product_name , price from product where price>150;
+
+PRODUCT_NAME                                            PRICE
+-------------------------------------------------- ----------
+Laptop                                                  50000
+Mobile                                                  20000
+Shirt                                                     800
+Jeans                                                    1200
+Java Book                                                 450
+Chair                                                    3000
+Table                                                    5000
+Novel                                                     250
+
+8 rows selected.
+
+
+13. Find products priced between 100 and 180. 
+
+SQL> select product_name , price from product where price between 100 and 180;
+
+no rows selected
+
+
+14. Display product name and price of all products. 
+
+SQL> select product_name , price from product ;
+
+PRODUCT_NAME                                            PRICE
+-------------------------------------------------- ----------
+Laptop                                                  50000
+Mobile                                                  20000
+Shirt                                                     800
+Jeans                                                    1200
+Java Book                                                 450
+Chair                                                    3000
+Table                                                    5000
+Novel                                                     250
+
+8 rows selected.
+
+
+15. Count the number of products in each category. 
+
+SQL> select count(product_id),category_id from product group by category_id;
+
+COUNT(PRODUCT_ID) CATEG
+----------------- -----
+                2 CT03
+                2 CT04
+                2 CT01
+                2 CT02
+
+
+16. Find the maximum and minimum product price.
+
+SQL> SELECT product_name, MIN(price)
+  2  FROM product
+  3  GROUP BY product_name;
+
+PRODUCT_NAME                                       MIN(PRICE)
+-------------------------------------------------- ----------
+Mobile                                                  20000
+Chair                                                    3000
+Laptop                                                  50000
+Novel                                                     250
+Jeans                                                    1200
+Java Book                                                 450
+Shirt                                                     800
+Table                                                    5000
+
+8 rows selected.
+
+SQL> SELECT MIN(price) from product;
+
+MIN(PRICE)
+----------
+       250
+
+SQL> SELECT product_name, price
+  2  FROM product
+  3  WHERE price = (SELECT MIN(price) FROM product);
+
+PRODUCT_NAME                                            PRICE
+-------------------------------------------------- ----------
+Novel                                                     250
+
+SQL> SELECT Max(price) from product;
+
+MAX(PRICE)
+----------
+     50000
+
+SQL> SELECT product_name, price
+  2  FROM product
+  3  WHERE price = (SELECT Max(price) FROM product);
+
+PRODUCT_NAME                                            PRICE
+-------------------------------------------------- ----------
+Laptop                                                  50000
+
+
+17. Calculate the average price of all products. 
+
+SQL> SELECT avg(price) from product;
+
+AVG(PRICE)
+----------
+   10087.5
+
+
+18. Find products belonging to 'Electronics' or 'Clothing' category. 
+
+
+SQL> SELECT p.product_name, c.category_name
+  2  FROM product p
+  3  JOIN category c
+  4  ON p.category_id = c.category_id
+  5  WHERE c.category_name IN ('Electronics','Clothing');
+
+PRODUCT_NAME
+--------------------------------------------------
+CATEGORY_NAME
+------------------------------
+Laptop
+Electronics
+
+Mobile
+Electronics
+
+Shirt
+Clothing
+
+
+PRODUCT_NAME
+--------------------------------------------------
+CATEGORY_NAME
+------------------------------
+Jeans
+Clothing
+
+
+SQL> SET LINESIZE 100;
+SQL> SELECT p.product_name, c.category_name
+  2  FROM product p, category c
+  3  WHERE p.category_id = c.category_id
+  4  AND c.category_name IN ('Electronics','Clothing');
+
+PRODUCT_NAME                                       CATEGORY_NAME
+-------------------------------------------------- ------------------------------
+Laptop                                             Electronics
+Mobile                                             Electronics
+Shirt                                              Clothing
+Jeans                                              Clothing
+
+SQL> SELECT p.product_name, c.category_name
+  2  FROM product p
+  3  INNER JOIN category c
+  4  ON p.category_id = c.category_id
+  5  WHERE c.category_name IN ('Electronics','Clothing');
+
+PRODUCT_NAME                                       CATEGORY_NAME
+-------------------------------------------------- ------------------------------
+Laptop                                             Electronics
+Mobile                                             Electronics
+Shirt                                              Clothing
+Jeans                                              Clothing
+
+
+19. Increase the price of product 'Laptop' to 55000. 
+
+SQL> update product set price=50000 where product_name='Laptop';
+
+1 row updated.
+
+SQL> select * from product;
+
+PRODU PRODUCT_NAME                                       CATEG      PRICE      STOCK
+----- -------------------------------------------------- ----- ---------- ----------
+PR01  Laptop                                             CT01       50000         20
+PR02  Mobile                                             CT01       20000         30
+PR03  Shirt                                              CT02         800         50
+PR04  Jeans                                              CT02        1200         40
+PR05  Java Book                                          CT03         450         25
+PR06  Chair                                              CT04        3000         15
+PR07  Table                                              CT04        5000         10
+PR08  Novel                                              CT03         250         35
+
+8 rows selected.
+
+
+20. List products sorted by product name in ascending order.
+
+SQL> select product_name from product order by product_name;
+
+PRODUCT_NAME
+--------------------------------------------------
+Chair
+Java Book
+Jeans
+Laptop
+Mobile
+Novel
+Shirt
+Table
+
+8 rows selected.
+
+
+
+
+ORDERS TABLE–Based 
+
+SQL> desc customer;
+ Name                                                  Null?    Type
+ ----------------------------------------------------- -------- ------------------------------------
+ CUST_ID                                               NOT NULL VARCHAR2(5)
+ F_NAME                                                         VARCHAR2(50)
+ L_NAME                                                         VARCHAR2(50)
+ AREA                                                           VARCHAR2(10)
+ PHONE_NO                                                       VARCHAR2(10)
+
+SQL> desc orders;
+ Name                                                  Null?    Type
+ ----------------------------------------------------- -------- ------------------------------------
+ ORDER_ID                                              NOT NULL VARCHAR2(5)
+ CUST_ID                                                        VARCHAR2(5)
+ ORDER_DATE                                                     DATE
+ TOTAL_AMOUNT                                                   NUMBER(10,2)
+
+
+21. Display all orders placed by customer 'C02'. 
+
+SQL> select * from orders where cust_id='C02';
+
+ORDER CUST_ ORDER_DAT TOTAL_AMOUNT
+----- ----- --------- ------------
+O02   C02   15-JUL-23        20000
+O05   C02   12-AUG-23        10000
+
+
+22. Count total number of orders. 
+
+SQL> select count(order_id) as count from orders;
+
+     COUNT
+----------
+         8
+
+
+23. Find orders placed before August.
+
+SQL> select order_id from orders where order_date<'01-Aug-23';
+
+ORDER
+-----
+O01
+O02
+O03
+
+ 
+24. Display order_id and order_date of all orders. 
+
+SQL> select order_id ,order_date from orders;
+
+ORDER ORDER_DAT
+----- ---------
+O01   10-JUL-23
+O02   15-JUL-23
+O03   20-JUL-23
+O04   05-AUG-23
+O05   12-AUG-23
+O06   18-AUG-23
+O07   22-AUG-23
+O08   25-AUG-23
+
+8 rows selected.
+
+
+25. Change the total amount of order 'O05' to 12000. 
+
+SQL> update orders set total_amount=12000 where order_id='O05';
+
+1 row updated.
+
+SQL> select * from orders ;
+
+ORDER CUST_ ORDER_DAT TOTAL_AMOUNT
+----- ----- --------- ------------
+O01   C01   10-JUL-23        50000
+O02   C02   15-JUL-23        20000
+O03   C03   20-JUL-23         1250
+O04   C04   05-AUG-23         3000
+O05   C02   12-AUG-23        12000
+O06   C05   18-AUG-23         5000
+O07   C06   22-AUG-23          450
+O08   C07   25-AUG-23          800
+
+8 rows selected.
+
+ORDER_ITEMS TABLE–Based 
+
+ Name                                                  Null?    Type
+ ----------------------------------------------------- -------- ------------------------------------
+ ORDER_ITEM_ID                                         NOT NULL NUMBER(5)
+ ORDER_ID                                                       VARCHAR2(5)
+ PRODUCT_ID                                                     VARCHAR2(5)
+ QUANTITY                                                       NUMBER(5)
+ PRICE                                                          NUMBER(8,2)
+
+
+26. Display all order items. 
+
+SQL> select * from order_items;
+
+ORDER_ITEM_ID ORDER PRODU   QUANTITY      PRICE
+------------- ----- ----- ---------- ----------
+            1 O01   PR01           1      50000
+            2 O02   PR02           1      20000
+            3 O03   PR03           1        800
+            4 O03   PR08           1        250
+            5 O04   PR06           1       3000
+            6 O05   PR07           2       5000
+            7 O06   PR07           1       5000
+            8 O07   PR05           1        450
+            9 O08   PR03           1        800
+
+9 rows selected.
+
+
+27. Find total quantity ordered for each product. 
+
+SQL> select sum(quantity) from order_items group by product_id;
+
+SUM(QUANTITY)
+-------------
+            3
+            1
+            1
+            2
+            1
+            1
+            1
+
+7 rows selected.
+
+
+28. Find products ordered more than 3 times. 
+
+SQL> desc order_items;
+SQL> select product_id,sum(quantity) from order_items group by product_id;
+
+PRODU SUM(QUANTITY)
+----- -------------
+PR07              3
+PR08              1
+PR02              1
+PR03              2
+PR06              1
+PR01              1
+PR05              1
+
+7 rows selected.
+
+SQL> select product_id,count(quantity) from order_items group by product_id having count(quantity)>3;
+
+no rows selected
+
+
+29. Calculate total price per order using order_items table. 
+
+SQL> select order_id,sum(quantity * price) from order_items group by order_id;
+
+ORDER SUM(QUANTITY*PRICE)
+----- -------------------
+O05                 10000
+O07                   450
+O06                  5000
+O08                   800
+O04                  3000
+O03                  1050
+O01                 50000
+O02                 20000
+
+8 rows selected.
+
+SQL> select order_id,sum(quantity * price) as total_amount from order_items group by order_id;
+
+ORDER TOTAL_AMOUNT
+----- ------------
+O05          10000
+O07            450
+O06           5000
+O08            800
+O04           3000
+O03           1050
+O01          50000
+O02          20000
+
+8 rows selected.
+
+
+30. Find products that were never ordered.
+
+SQL> desc product;
+ Name                                                  Null?    Type
+ ----------------------------------------------------- -------- ------------------------------------
+ PRODUCT_ID                                            NOT NULL VARCHAR2(5)
+ PRODUCT_NAME                                                   VARCHAR2(50)
+ CATEGORY_ID                                                    VARCHAR2(5)
+ PRICE                                                          NUMBER(8,2)
+ STOCK                                                          NUMBER(38)
+
+SQL> desc order_items;
+ Name                                                  Null?    Type
+ ----------------------------------------------------- -------- ------------------------------------
+ ORDER_ITEM_ID                                         NOT NULL NUMBER(5)
+ ORDER_ID                                                       VARCHAR2(5)
+ PRODUCT_ID                                                     VARCHAR2(5)
+ QUANTITY                                                       NUMBER(5)
+ PRICE                                                          NUMBER(8,2)
+
+
+SQL> select product.product_id from product left join order_items on product.product_id=order_items.product_id where order_items.product_id is null;
+
+PRODU
+-----
+PR04
+
+
+
+INVOICE TABLE–Based 
+
+31. Display all invoices. 
+
+SQL> desc invoice;
+ Name                                                  Null?    Type
+ ----------------------------------------------------- -------- ------------------------------------
+ INV_NO                                                NOT NULL VARCHAR2(5)
+ ORDER_ID                                                       VARCHAR2(5)
+ INV_DATE                                                       DATE
+ AMOUNT                                                         NUMBER(10,2)
+
+SQL> select* from invoice;
+
+INV_N ORDER INV_DATE      AMOUNT
+----- ----- --------- ----------
+I01   O01   11-JUL-23      50000
+I02   O02   16-JUL-23      20000
+I03   O03   21-JUL-23       1250
+I04   O04   06-AUG-23       3000
+I05   O05   13-AUG-23      10000
+I06   O06   19-AUG-23       5000
+I07   O07   23-AUG-23        450
+I08   O08   26-AUG-23        800
+
+8 rows selected.
+
+
+32. Find invoice details for order_id 'O03'. 
+
+SQL> select * from invoice where order_id='O03';
+
+INV_N ORDER INV_DATE      AMOUNT
+----- ----- --------- ----------
+I03   O03   21-JUL-23       1250
+
+
+33. Delete invoice with inv_no = 'I08'. 
+
+SQL> DELETE FROM payment
+  2  WHERE inv_no = 'I08';
+
+1 row deleted.
+
+SQL>
+SQL> DELETE FROM invoice
+  2  WHERE inv_no = 'I08';
+
+1 row deleted.
+
+SQL> select * from invoice;
+
+INV_N ORDER INV_DATE      AMOUNT
+----- ----- --------- ----------
+I01   O01   11-JUL-23      50000
+I02   O02   16-JUL-23      20000
+I03   O03   21-JUL-23       1250
+I04   O04   06-AUG-23       3000
+I05   O05   13-AUG-23      10000
+I06   O06   19-AUG-23       5000
+I07   O07   23-AUG-23        450
+
+7 rows selected.
+
+SQL> select * from payment;
+
+PAYME INV_N PAYMENT_D PAYMENT_MODE         PAYMENT_STATUS
+----- ----- --------- -------------------- ---------------
+P01   I01   11-JUL-23 UPI                  SUCCESS
+P02   I02   16-JUL-23 CARD                 SUCCESS
+P03   I03   21-JUL-23 UPI                  FAILED
+P04   I04   06-AUG-23 NETBANKING           SUCCESS
+P05   I05   13-AUG-23 UPI                  SUCCESS
+P06   I06   19-AUG-23 CARD                 FAILED
+P07   I07   23-AUG-23 UPI                  SUCCESS
+P09   I05   14-AUG-23 UPI                  FAILED
+
+8 rows selected.
+
+
+34. Change invoice date of inv_no 'I07' to 16-08-2023. 
+
+SQL> update invoice set inv_date='16-aug-23' where inv_no='I07';
+
+1 row updated.
+
+SQL> select * from invoice;
+
+INV_N ORDER INV_DATE      AMOUNT
+----- ----- --------- ----------
+I01   O01   11-JUL-23      50000
+I02   O02   16-JUL-23      20000
+I03   O03   21-JUL-23       1250
+I04   O04   06-AUG-23       3000
+I05   O05   13-AUG-23      10000
+I06   O06   19-AUG-23       5000
+I07   O07   16-AUG-23        450
+
+7 rows selected.
+
+
+35. Find invoices generated between two given dates.
+
+SQL> select inv_no ,inv_date from invoice where inv_date between '20-JUL-23' and '10-AUG-23';
+
+INV_N INV_DATE
+----- ---------
+I03   21-JUL-23
+I04   06-AUG-23
+
+SQL>
+
+
+
+
+PAYMENT TABLE–Based 
+
+36. Display all payment records. 
+
+
+SQL> select * from payment;
+
+PAYME INV_N PAYMENT_D PAYMENT_MODE         PAYMENT_STATUS
+----- ----- --------- -------------------- ---------------
+P01   I01   11-JUL-23 UPI                  SUCCESS
+P02   I02   16-JUL-23 CARD                 SUCCESS
+P03   I03   21-JUL-23 UPI                  FAILED
+P04   I04   06-AUG-23 NETBANKING           SUCCESS
+P05   I05   13-AUG-23 UPI                  SUCCESS
+P06   I06   19-AUG-23 CARD                 FAILED
+P07   I07   23-AUG-23 UPI                  SUCCESS
+P09   I05   14-AUG-23 UPI                  FAILED
+
+8 rows selected.
+
+
+37. Find payments with payment status 'FAILED'. 
+SQL> select * from payment where payment_status='failed';//case sensitive
+
+no rows selected
+
+SQL> select * from payment where payment_status='FAILED';
+
+PAYME INV_N PAYMENT_D PAYMENT_MODE         PAYMENT_STATUS
+----- ----- --------- -------------------- ---------------
+P03   I03   21-JUL-23 UPI                  FAILED
+P06   I06   19-AUG-23 CARD                 FAILED
+P09   I05   14-AUG-23 UPI                  FAILED
+
+
+
+38. Count number of successful payments. 
+
+SQL> sel
+SQL> desc payment;
+ Name                                                  Null?    Type
+ ----------------------------------------------------- -------- ------------------------------------
+ PAYMENT_ID                                            NOT NULL VARCHAR2(5)
+ INV_NO                                                         VARCHAR2(5)
+ PAYMENT_DATE                                                   DATE
+ PAYMENT_MODE                                                   VARCHAR2(20)
+ PAYMENT_STATUS                                                 VARCHAR2(15)
+
+SQL> select count(payment_id) from payment where payment_status='SUCCESS';
+
+COUNT(PAYMENT_ID)
+-----------------
+                5
+
+
+39. Find payments made using 'UPI'. 
+SQL> select *from payment where payment_mode='UPI';
+
+PAYME INV_N PAYMENT_D PAYMENT_MODE         PAYMENT_STATUS
+----- ----- --------- -------------------- ---------------
+P01   I01   11-JUL-23 UPI                  SUCCESS
+P03   I03   21-JUL-23 UPI                  FAILED
+P05   I05   13-AUG-23 UPI                  SUCCESS
+P07   I07   23-AUG-23 UPI                  SUCCESS
+P09   I05   14-AUG-23 UPI                  FAILED
+
+
+40. Delete payment record with payment_id 'P09'.
+
+SQL> delete from payment where payment_id='P09';
+
+1 row deleted.
+
+SQL> select *from payment ;
+
+PAYME INV_N PAYMENT_D PAYMENT_MODE         PAYMENT_STATUS
+----- ----- --------- -------------------- ---------------
+P01   I01   11-JUL-23 UPI                  SUCCESS
+P02   I02   16-JUL-23 CARD                 SUCCESS
+P03   I03   21-JUL-23 UPI                  FAILED
+P04   I04   06-AUG-23 NETBANKING           SUCCESS
+P05   I05   13-AUG-23 UPI                  SUCCESS
+P06   I06   19-AUG-23 CARD                 FAILED
+P07   I07   23-AUG-23 UPI                  SUCCESS
+
+7 rows selected.
+
+
+
+JOIN & AGGREGATION–Based 
+
+41. Display customer names along with their order IDs. 
+SQL> select c.cust_id,c.f_name,c.l_name ,o.order_id from customer c left join orders o on c.cust_id=o.cust_id ;
+
+CUST_ F_NAME
+----- --------------------------------------------------
+L_NAME                                             ORDER
+-------------------------------------------------- -----
+C01   Payal
+Taitkar                                            O01
+
+C02   Rajesh
+Sharma                                             O02
+
+C03   Priya
+Patil                                              O03
+
+
+CUST_ F_NAME
+----- --------------------------------------------------
+L_NAME                                             ORDER
+-------------------------------------------------- -----
+C04   Amit
+Joshi                                              O04
+
+C02   Rajesh
+Sharma                                             O05
+
+C05   Neha
+Verma                                              O06
+
+
+CUST_ F_NAME
+----- --------------------------------------------------
+L_NAME                                             ORDER
+-------------------------------------------------- -----
+C06   Pooja
+Singh                                              O07
+
+C07   Rohan
+Gupta                                              O08
+
+C08   Kiran
+Mehta
+
+
+CUST_ F_NAME
+----- --------------------------------------------------
+L_NAME                                             ORDER
+-------------------------------------------------- -----
+C09   Sonal
+Jain
+
+
+10 rows selected.
+
+
+SQL> set linesize 200;
+SQL> select c.cust_id,c.f_name,c.l_name ,o.order_id from customer c left join orders o on c.cust_id=o.cust_id ;
+
+CUST_ F_NAME                                             L_NAME                                             ORDER
+----- -------------------------------------------------- -------------------------------------------------- -----
+C01   Payal                                              Taitkar                                            O01
+C02   Rajesh                                             Sharma                                             O02
+C03   Priya                                              Patil                                              O03
+C04   Amit                                               Joshi                                              O04
+C02   Rajesh                                             Sharma                                             O05
+C05   Neha                                               Verma                                              O06
+C06   Pooja                                              Singh                                              O07
+C07   Rohan                                              Gupta                                              O08
+C08   Kiran                                              Mehta
+C09   Sonal                                              Jain
+
+10 rows selected.
+
+
+42. List product names and quantities ordered by each customer. 
+
+SQL> SELECT c.f_name,
+  2         p.product_name,
+  3         oi.quantity
+  4  FROM customer c
+  5  JOIN orders o
+  6  ON c.cust_id = o.cust_id
+  7  JOIN order_items oi
+  8  ON o.order_id = oi.order_id
+  9  JOIN product p
+ 10  ON oi.product_id = p.product_id;
+
+F_NAME                                             PRODUCT_NAME                                         QUANTITY
+-------------------------------------------------- -------------------------------------------------- ----------
+Payal                                              Laptop                                                      1
+Rajesh                                             Mobile                                                      1
+Rohan                                              Shirt                                                       1
+Priya                                              Shirt                                                       1
+Pooja                                              Java Book                                                   1
+Amit                                               Chair                                                       1
+Neha                                               Table                                                       1
+Rajesh                                             Table                                                       2
+Priya                                              Novel                                                       1
+
+9 rows selected.
+
+
+43. Find total amount spent by each customer. 
+
+SQL> select* from order_items;
+
+ORDER_ITEM_ID ORDER PRODU   QUANTITY      PRICE
+------------- ----- ----- ---------- ----------
+            1 O01   PR01           1      50000
+            2 O02   PR02           1      20000
+            3 O03   PR03           1        800
+            4 O03   PR08           1        250
+            5 O04   PR06           1       3000
+            6 O05   PR07           2       5000
+            7 O06   PR07           1       5000
+            8 O07   PR05           1        450
+            9 O08   PR03           1        800
+
+9 rows selected.
+
+
+SQL> select c.cust_id,c.f_name,c.l_name, sum(o.total_amount) from customer c left join orders o on c.cust_id=o.cust_id group by c.f_name,c.l_name,c.cust_id;
+
+CUST_ F_NAME                                             L_NAME                                             SUM(O.TOTAL_AMOUNT)
+----- -------------------------------------------------- -------------------------------------------------- -------------------
+C04   Amit                                               Joshi                                                            3000
+C07   Rohan                                              Gupta                                                             800
+C09   Sonal                                              Jain
+C01   Payal                                              Taitkar                                                         50000
+C03   Priya                                              Patil                                                            1250
+C02   Rajesh                                             Sharma                                                          32000
+C06   Pooja                                              Singh                                                             450
+C05   Neha                                               Verma                                                            5000
+C08   Kiran                                              Mehta
+
+9 rows selected.
+
+SQL> set linesize 150;
+SQL> select c.cust_id,c.f_name,c.l_name, sum(o.total_amount) from customer c left join orders o on c.cust_id=o.cust_id group by c.f_name,c.l_name,c.cust_id;
+
+CUST_ F_NAME                                             L_NAME                                             SUM(O.TOTAL_AMOUNT)
+----- -------------------------------------------------- -------------------------------------------------- -------------------
+C04   Amit                                               Joshi                                                            3000
+C07   Rohan                                              Gupta                                                             800
+C09   Sonal                                              Jain
+C01   Payal                                              Taitkar                                                         50000
+C03   Priya                                              Patil                                                            1250
+C02   Rajesh                                             Sharma                                                          32000
+C06   Pooja                                              Singh                                                             450
+C05   Neha                                               Verma                                                            5000
+C08   Kiran                                              Mehta
+
+9 rows selected.
+
+
+SQL> SELECT c.cust_id,
+  2         c.f_name,
+  3         c.l_name,
+  4         NVL(SUM(o.total_amount),0) AS total_spent
+  5  FROM customer c
+  6  LEFT JOIN orders o
+  7  ON c.cust_id = o.cust_id
+  8  GROUP BY c.cust_id,c.f_name,c.l_name;
+
+CUST_ F_NAME                                             L_NAME                                             TOTAL_SPENT
+----- -------------------------------------------------- -------------------------------------------------- -----------
+C03   Priya                                              Patil                                                     1250
+C01   Payal                                              Taitkar                                                  50000
+C04   Amit                                               Joshi                                                     3000
+C05   Neha                                               Verma                                                     5000
+C06   Pooja                                              Singh                                                      450
+C09   Sonal                                              Jain                                                         0
+C02   Rajesh                                             Sharma                                                   32000
+C07   Rohan                                              Gupta                                                      800
+C08   Kiran                                              Mehta                                                        0
+
+9 rows selected.
+
+
+44. Display invoice number and customer name. 
+
+SQL> select i.inv_no,o.order_id,c.f_name from invoice i join orders o on i.order_id=o.order_id join customer c on o.cust_id=c.cust_id;
+
+INV_N ORDER F_NAME
+----- ----- --------------------------------------------------
+I01   O01   Payal
+I05   O05   Rajesh
+I02   O02   Rajesh
+I03   O03   Priya
+I04   O04   Amit
+I06   O06   Neha
+I07   O07   Pooja
+
+7 rows selected.
+
+
+45. Find customers who have placed at least one order. 
+
+SQL> select c.f_name , count(order_id) from customer c right join orders o on c.cust_id=o.cust_id group by c.f_name having count(order_id)>=1;
+
+F_NAME                                             COUNT(ORDER_ID)
+-------------------------------------------------- ---------------
+Rohan                                                            1
+Neha                                                             1
+Rajesh                                                           2
+Priya                                                            1
+Amit                                                             1
+Payal                                                            1
+Pooja                                                            1
+
+7 rows selected.
+
+
+46. Find customers who have not placed any orders. 
+SQL> select c.f_name , count(order_id) from customer c left join orders o on c.cust_id=o.cust_id group by c.f_name having count(order_id) is null;
+
+no rows selected
+
+SQL> select* from customer;
+
+CUST_ F_NAME                                             L_NAME                                             AREA       PHONE_NO
+----- -------------------------------------------------- -------------------------------------------------- ---------- ----------
+C01   Payal                                              Taitkar                                            DA         9876543210
+C02   Rajesh                                             Sharma                                             MU         9876543211
+C03   Priya                                              Patil                                              GH         9876543212
+C04   Amit                                               Joshi                                              DA         9876543213
+C05   Neha                                               Verma                                              JK         9876543214
+C06   Pooja                                              Singh                                              MU         9876543215
+C07   Rohan                                              Gupta                                              GH         9876543216
+C08   Kiran                                              Mehta                                              DA         9876543217
+C09   Sonal                                              Jain                                               MU         9876543218
+
+9 rows selected.
+
+SQL> set linesize 150 ;
+SQL>
+SQL> select* from customer;
+
+CUST_ F_NAME                                             L_NAME                                             AREA       PHONE_NO
+----- -------------------------------------------------- -------------------------------------------------- ---------- ----------
+C01   Payal                                              Taitkar                                            DA         9876543210
+C02   Rajesh                                             Sharma                                             MU         9876543211
+C03   Priya                                              Patil                                              GH         9876543212
+C04   Amit                                               Joshi                                              DA         9876543213
+C05   Neha                                               Verma                                              JK         9876543214
+C06   Pooja                                              Singh                                              MU         9876543215
+C07   Rohan                                              Gupta                                              GH         9876543216
+C08   Kiran                                              Mehta                                              DA         9876543217
+C09   Sonal                                              Jain                                               MU         9876543218
+
+9 rows selected.
+
+SQL> select* from orders;
+
+ORDER CUST_ ORDER_DAT TOTAL_AMOUNT
+----- ----- --------- ------------
+O01   C01   10-JUL-23        50000
+O02   C02   15-JUL-23        20000
+O03   C03   20-JUL-23         1250
+O04   C04   05-AUG-23         3000
+O05   C02   12-AUG-23        12000
+O06   C05   18-AUG-23         5000
+O07   C06   22-AUG-23          450
+O08   C07   25-AUG-23          800
+
+8 rows selected.
+
+
+SQL> select c.f_name , count(order_id) from customer c left join orders o on c.cust_id=o.cust_id group by c.f_name having count(order_id) =0;
+
+F_NAME                                             COUNT(ORDER_ID)
+-------------------------------------------------- ---------------
+Kiran                                                            0
+Sonal                                                            0
+
+SQL> SELECT c.cust_id, c.f_name, c.l_name
+  2  FROM customer c
+  3  LEFT JOIN orders o
+  4  ON c.cust_id = o.cust_id
+  5  WHERE o.order_id IS NULL;
+
+CUST_ F_NAME                                             L_NAME
+----- -------------------------------------------------- --------------------------------------------------
+C08   Kiran                                              Mehta
+C09   Sonal                                              Jain
+
+
+47. Display product name and category name for all products. 
+
+SQL> select p.product_name, c.category_name from product p join category c on p.category_id=c.category_id
+  2  ;
+
+PRODUCT_NAME                                       CATEGORY_NAME
+-------------------------------------------------- ------------------------------
+Laptop                                             Electronics
+Mobile                                             Electronics
+Shirt                                              Clothing
+Jeans                                              Clothing
+Java Book                                          Books
+Chair                                              Furniture
+Table                                              Furniture
+Novel                                              Books
+
+8 rows selected.
+
+
+48. Find total sales amount for each category. 
+
+SQL> select sum(o.total_amount), c.category_name from orders o join order_items oi on o.order_id=oi.order_id join product p on p.product_id= oi.product_id join category c on c.category_id=p.category_id group by c.category_name;
+
+SUM(O.TOTAL_AMOUNT) CATEGORY_NAME
+------------------- ------------------------------
+               2050 Clothing
+               1700 Books
+              70000 Electronics
+              20000 Furniture
+
+
+
+49. Find the customer who has spent the maximum amount. 
+
+
+
+SQL> SELECT c.f_name,
+  2         SUM(o.total_amount) AS total_spent
+  3  FROM customer c
+  4  JOIN orders o
+  5  ON c.cust_id = o.cust_id
+  6  GROUP BY c.f_name
+  7  HAVING SUM(o.total_amount) =
+  8  (
+  9      SELECT MAX(total_spent)
+ 10      FROM
+ 11      (
+ 12          SELECT SUM(total_amount) AS total_spent
+ 13          FROM orders
+ 14          GROUP BY cust_id
+ 15      )
+ 16  );
+
+F_NAME                                             TOTAL_SPENT
+-------------------------------------------------- -----------
+Payal                                                    50000
+
+
+50. Display product names ordered by customers from area 'DA'.                                                                                                                                    
+
+SQL> select p.product_name from product p join order_items oi on p.product_id=oi.product_id join orders o on o.order_id= oi.order_id join customer c on c.cust_id=o.cust_id where c.area='DA';
+
+PRODUCT_NAME
+--------------------------------------------------
+Laptop
+Chair
+
+SQL> select p.product_name ,c.area from product p join order_items oi on p.product_id=oi.product_id join orders o on o.order_id= oi.order_id join customer c on c.cust_id=o.cust_id where c.area='DA';
+
+PRODUCT_NAME                                       AREA
+-------------------------------------------------- ----------
+Laptop                                             DA
+Chair                                              DA
+
